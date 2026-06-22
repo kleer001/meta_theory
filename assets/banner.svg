@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" font-family="'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif">
+  <defs>
+    <clipPath id="frame"><rect x="0" y="0" width="1280" height="360" rx="14"/></clipPath>
+  </defs>
+
+  <!-- paper -->
+  <g clip-path="url(#frame)">
+    <rect x="0" y="0" width="1280" height="360" fill="#fafafa"/>
+
+    <!-- topographic contour lines (the cartographer's map) -->
+    <g fill="none" stroke="#dcdcd4" stroke-width="1.5">
+      <path d="M -40 250 C 180 200, 360 300, 560 250 S 980 200, 1320 270"/>
+      <path d="M -40 285 C 180 240, 360 335, 560 285 S 980 245, 1320 305"/>
+      <path d="M -40 320 C 180 280, 360 365, 560 320 S 980 290, 1320 340"/>
+    </g>
+    <g fill="none" stroke="#e6e6df" stroke-width="1.2">
+      <path d="M 760 60 C 860 40, 980 90, 1120 55 S 1300 30, 1360 70"/>
+      <path d="M 800 95 C 900 78, 1010 120, 1140 92 S 1310 70, 1360 100"/>
+    </g>
+
+    <!-- altitude ladder: rising rungs into the contour, the spine of mastery -->
+    <g transform="translate(74,96)">
+      <!-- two stiles -->
+      <line x1="0" y1="184" x2="34" y2="0" stroke="#2f6f6a" stroke-width="4" stroke-linecap="round"/>
+      <line x1="56" y1="184" x2="90" y2="0" stroke="#2f6f6a" stroke-width="4" stroke-linecap="round"/>
+      <!-- rungs, lighter as they ascend (foundation = solid, altitude = aspirational) -->
+      <line x1="6"  y1="158" x2="62" y2="158" stroke="#1a1a1a" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="13" y1="120" x2="69" y2="120" stroke="#1a1a1a" stroke-width="3.2" stroke-linecap="round" opacity="0.85"/>
+      <line x1="20" y1="82"  x2="76" y2="82"  stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+      <line x1="27" y1="44"  x2="83" y2="44"  stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round" opacity="0.4" stroke-dasharray="2 7"/>
+      <line x1="34" y1="6"   x2="90" y2="6"   stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" opacity="0.25" stroke-dasharray="2 9"/>
+      <!-- you-are-here marker on the solid foundation -->
+      <circle cx="34" cy="158" r="6.5" fill="#fafafa" stroke="#2f6f6a" stroke-width="3"/>
+    </g>
+
+    <!-- wordmark -->
+    <text x="210" y="150" font-size="68" font-weight="700" letter-spacing="6" fill="#1a1a1a">META_THEORY</text>
+    <text x="213" y="196" font-size="27" font-style="italic" fill="#2f6f6a">map the ladder before you climb it</text>
+
+    <!-- tool roster -->
+    <text x="214" y="252" font-family="'SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="18" letter-spacing="1" fill="#555">
+      cartographer<tspan fill="#bbb">  ·  </tspan>canon-finder<tspan fill="#bbb">  ·  </tspan>altitude-check<tspan fill="#bbb">  ·  </tspan>the&#160;maestro
+    </text>
+
+    <!-- frame -->
+    <rect x="1.5" y="1.5" width="1277" height="357" rx="13.5" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  </g>
+</svg>

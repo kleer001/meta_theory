@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="META_THEORY — map the ladder before you climb it" width="100%">
+</p>
+
 # META_THEORY
 
 Tools for plumbing the depths of any creative venture with long, twisted roots —

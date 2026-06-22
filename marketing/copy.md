@@ -59,7 +59,7 @@ Topics/tags: `prompts`, `claude-code`, `ai-assisted`, `meta-learning`,
 > part every expert in the field takes for granted. So you end up doing advanced
 > work on a base you never learned in order. The gap is invisible until it isn't.
 >
-> META_THEORY is my fix for that, turned into a reusable kit:
+> META_THEORY is a fix for that, turned into a reusable kit:
 >
 > - **Six subject-agnostic prompts** you paste into any chat — *cartographer* (map
 >   the full ladder of mastery before building), *canon-finder* (locate the
@@ -80,10 +80,10 @@ Topics/tags: `prompts`, `claude-code`, `ai-assisted`, `meta-learning`,
 ## Reddit — r/ClaudeAI / r/ChatGPT / r/PromptEngineering
 
 **Title:**
-> I kept building advanced things on foundations I never wrote down. So I made a kit to force the opposite.
+> Building advanced things on foundations you never wrote down — a kit to force the opposite.
 
 **Body:**
-> A pattern I hit over and over with AI tools: the model gives you exactly what you
+> A pattern that recurs with AI tools: the model gives you exactly what you
 > ask for, at the level you ask for it. Ask for the impressive result, get the
 > impressive result — and zero of the underlying grammar that experts take for
 > granted. Months later you realize you've been doing PhD-level work without the
@@ -93,10 +93,10 @@ Topics/tags: `prompts`, `claude-code`, `ai-assisted`, `meta-learning`,
 > **map and the learning-order**, not the answer. Then re-check periodically that
 > you never drifted above your foundation.
 >
-> I packaged it as META_THEORY — six copy-paste, subject-agnostic prompts plus a
+> Packaged as META_THEORY — six copy-paste, subject-agnostic prompts plus a
 > few Claude Code skills that automate the recurring audit. Works for code, music,
-> game design, writing, anything with deep roots. Link in comments. Curious whether
-> this matches a frustration other people have, or if it's just me.
+> game design, writing, anything with deep roots. Link in comments. Does this match
+> a frustration you've run into?
 
 *(Subreddit etiquette: post the link as a comment, not the body. Lead with the
 problem, not the repo.)*
@@ -112,14 +112,14 @@ problem, not the repo.)*
 > META_THEORY: 6 prompts + Claude Code skills that map a craft's ladder *before*
 > you build above it.
 >
-> Find your bearings before you build. 🧭
+> Find your bearings before you build.
 
 **Thread opener (1/n):**
 > The most expensive mistake in AI-assisted work isn't a hallucination. It's
 > *sequence*.
 >
 > You have all the content. You just never asked for the curriculum. Here's the
-> fix, and the kit I built around it. 🧭🧵
+> fix, and the kit built around it.
 
 ---
 
@@ -135,7 +135,7 @@ problem, not the repo.)*
 > just the answer — then re-check that your ambitions haven't outrun your
 > foundation.
 >
-> I turned that into META_THEORY: a small kit of subject-agnostic prompts and
+> That became META_THEORY: a small kit of subject-agnostic prompts and
 > Claude Code skills that make the discipline automatic. It's free and open, and it
 > works in any domain with deep roots — software, design, music, writing.
 
@@ -157,10 +157,10 @@ problem, not the repo.)*
 
 ## Dev.to / blog intro (long-form hook)
 
-> I shipped something I was proud of, then realized I'd never written down the
-> 500-year-old grammar it was sitting on. Every fact had been available the whole
-> time. The thing I'd skipped wasn't knowledge — it was *order*. This is a post
-> about why AI-assisted work makes that failure structural, and the small kit I
+> You ship something you're proud of, then realize you never wrote down the
+> 500-year-old grammar it was sitting on. Every fact was available the whole
+> time. The thing skipped wasn't knowledge — it was *order*. This is a post
+> about why AI-assisted work makes that failure structural, and the small kit
 > built to force the fix.
 
 ---
@@ -169,4 +169,4 @@ problem, not the repo.)*
 
 > An LLM hands you whichever rung you point at — never the ladder. META_THEORY is a
 > small kit of prompts + skills that make you ask for the whole ladder first. Find
-> your bearings before you build. 🧭
+> your bearings before you build.

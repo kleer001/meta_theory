@@ -3,9 +3,8 @@
 > Audit what you've already built against the map: are you operating *above* your
 > foundation?
 
-The most valuable prompt in the kit, because it is *recurring*. It is, almost
-verbatim, the conversation that produced this directory — the moment of "wait, did
-we skip the basics?" turned into a repeatable reflex. Run it at every milestone.
+The most valuable prompt in the kit, because it is *recurring* — the "did we skip
+the basics?" check turned into a repeatable reflex. Run it at every milestone.
 
 - **Fire when:** at each milestone, before a big push, or whenever a project starts
   to feel "out of hand," hollow, or precariously advanced.

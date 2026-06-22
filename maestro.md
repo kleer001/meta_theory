@@ -1,13 +1,10 @@
 # The Maestro — ontological house-calls for a portfolio
 
-> *"I could also imagine a maestro repo that occasionally visited other repos and
-> gave them ontological checkups, haha!"*
-
-It's a joke with good bones. The [altitude-check](./skills/altitude-check.md) skill
-audits *one* repo on demand. The Maestro is that audit **generalized to a whole
-portfolio, on a schedule, by a dedicated repo** — the conductor who periodically
-walks the orchestra and asks each section whether it still knows its scales. This
-file specs it seriously enough to build, whenever you want to.
+The [altitude-check](./skills/altitude-check.md) skill audits *one* repo on
+demand. The Maestro generalizes that audit **to a whole portfolio, on a schedule,
+by a dedicated repo** — the conductor who periodically walks the orchestra and
+asks each section whether it still knows its scales. This file specs it seriously
+enough to build.
 
 ---
 
@@ -98,7 +95,7 @@ maestro/
 
 ---
 
-## Design principles (so the joke stays charming, not naggy)
+## Design principles (so it stays charming, not naggy)
 
 - **Honest clean bills.** "Your foundation is solid" must be a frequent, first-class
   result. An auditor that always finds work becomes noise.

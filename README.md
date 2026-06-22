@@ -6,21 +6,17 @@ Tools for plumbing the depths of any creative venture with long, twisted roots �
 music, game-making, storytelling, and other majestic feats — *before* you find
 yourself doing PhD work without the arithmetic.
 
-This kit exists because of a specific, repeatable mistake made in the `cyber_synth`
-project: a sophisticated procedural-music engine (phase vocoders, genre
-deconstructions, adaptive arrangement) was built, and only *late* did anyone
-notice the universal **grammar** of song construction underneath it had never been
-written down (see
-[`song_construction_basics.md`](https://github.com/kleer001/cyber_synth/blob/main/research/song_construction_basics.md)).
-The gap was predictable. This is the kit for predicting it next time, in any
-domain.
+Build something sophisticated enough and you eventually discover that the
+universal **grammar** beneath it — the foundation every expert in the field takes
+for granted — was never written down where you could see it. The gap is
+predictable. This is the kit for predicting it, early, in any domain.
 
 ---
 
 ## The core insight (why this is needed at all)
 
-The mistake was not ignorance — every fact was available the whole time. The
-mistake was **sequence**: we had the *content* but never asked for the
+The failure mode is rarely ignorance — every fact is usually available the whole
+time. The failure is **sequence**: you have the *content* but never ask for the
 *curriculum*. And that is a structural property of working with an AI, not a
 one-off slip:
 
@@ -98,7 +94,7 @@ phase** on a cadence:
   [`maestro.md`](./maestro.md) and let them run on a schedule, forever.
 
 If you only ever adopt one habit: **run `altitude-check` at every milestone.** It
-is this whole conversation, turned into a reflex.
+is this whole discipline, turned into a reflex.
 
 ---
 

@@ -2,8 +2,6 @@
   <img src="assets/banner.svg" alt="META_THEORY — find your bearings before you build" width="100%">
 </p>
 
-# META_THEORY
-
 Tools for plumbing the depths of any creative venture with long, twisted roots —
 music, game-making, storytelling, and other majestic feats — *before* you find
 yourself doing PhD work without the arithmetic.

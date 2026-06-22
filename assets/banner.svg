@@ -1,51 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360">
-  <defs><clipPath id="f"><rect width="1280" height="360" rx="14"/></clipPath></defs>
-  <g clip-path="url(#f)">
-    <rect width="1280" height="360" fill="#f4f0e8"/>
-
-    <!-- ===== compass rose, centered at (180,180) ===== -->
-    <g>
-      <!-- graduated ring -->
-      <circle cx="180" cy="180" r="118" fill="none" stroke="#8a99b2" stroke-width="1" stroke-opacity="0.7"/>
-      <circle cx="180" cy="180" r="104" fill="none" stroke="#c7cbd6" stroke-width="1"/>
-      <!-- intercardinal ticks (30deg steps) -->
-      <g stroke="#8a99b2" stroke-width="1">
-        <line x1="232" y1="89.94" x2="239" y2="77.8"/><line x1="270.06" y1="128" x2="282.2" y2="121"/>
-        <line x1="270.06" y1="232" x2="282.2" y2="239"/><line x1="232" y1="270.06" x2="239" y2="282.2"/>
-        <line x1="128" y1="270.06" x2="121" y2="282.2"/><line x1="89.94" y1="232" x2="77.8" y2="239"/>
-        <line x1="89.94" y1="128" x2="77.8" y2="121"/><line x1="128" y1="89.94" x2="121" y2="77.8"/>
-      </g>
-      <!-- cardinal ticks (longer) -->
-      <g stroke="#4a5d7d" stroke-width="1.4">
-        <line x1="180" y1="96" x2="180" y2="62"/><line x1="276" y1="180" x2="298" y2="180"/>
-        <line x1="180" y1="264" x2="180" y2="298"/><line x1="84" y1="180" x2="62" y2="180"/>
-      </g>
-
-      <!-- intercardinal star (recedes, light) -->
-      <polygon points="216.77,143.23 194,180 216.77,216.77 180,194 143.23,216.77 166,180 143.23,143.23 180,166" fill="#8a99b2" fill-opacity="0.55"/>
-      <!-- cardinal star (ink) -->
-      <polygon points="180,94 194.14,165.86 266,180 194.14,194.14 180,266 165.86,194.14 94,180 165.86,165.86" fill="#1a3a6b"/>
-      <!-- north spike (pin red) -->
-      <polygon points="180,94 194.14,165.86 165.86,165.86" fill="#b8341a"/>
-      <!-- hub -->
-      <circle cx="180" cy="180" r="7" fill="#f4f0e8" stroke="#1a3a6b" stroke-width="2"/>
-      <circle cx="180" cy="180" r="2.4" fill="#1a3a6b"/>
-
-      <!-- cardinal letters -->
-      <g font-family="'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace" font-size="12" letter-spacing="1" fill="#4a5d7d">
-        <text x="180" y="52" text-anchor="middle" fill="#b8341a">N</text>
-        <text x="318" y="185" text-anchor="middle">E</text>
-        <text x="180" y="322" text-anchor="middle">S</text>
-        <text x="42" y="185" text-anchor="middle">W</text>
-      </g>
+  <!-- ===== compass rose, centered at (180,180) ===== -->
+  <g>
+    <!-- graduated ring -->
+    <circle cx="180" cy="180" r="118" fill="none" stroke="#8a99b2" stroke-width="1" stroke-opacity="0.7"/>
+    <circle cx="180" cy="180" r="104" fill="none" stroke="#c7cbd6" stroke-width="1"/>
+    <!-- intercardinal ticks (30deg steps) -->
+    <g stroke="#8a99b2" stroke-width="1">
+      <line x1="232" y1="89.94" x2="239" y2="77.8"/><line x1="270.06" y1="128" x2="282.2" y2="121"/>
+      <line x1="270.06" y1="232" x2="282.2" y2="239"/><line x1="232" y1="270.06" x2="239" y2="282.2"/>
+      <line x1="128" y1="270.06" x2="121" y2="282.2"/><line x1="89.94" y1="232" x2="77.8" y2="239"/>
+      <line x1="89.94" y1="128" x2="77.8" y2="121"/><line x1="128" y1="89.94" x2="121" y2="77.8"/>
+    </g>
+    <!-- cardinal ticks (longer) -->
+    <g stroke="#4a5d7d" stroke-width="1.4">
+      <line x1="180" y1="96" x2="180" y2="62"/><line x1="276" y1="180" x2="298" y2="180"/>
+      <line x1="180" y1="264" x2="180" y2="298"/><line x1="84" y1="180" x2="62" y2="180"/>
     </g>
 
-    <!-- ===== type, right ===== -->
-    <text x="358" y="164" font-family="'Fraunces','Georgia','Times New Roman',serif" font-size="66" font-weight="600" fill="#1a3a6b">META_THEORY</text>
-    <text x="362" y="206" font-family="'Fraunces','Georgia',serif" font-style="italic" font-size="24" fill="#2c6fb5">find your bearings before you build</text>
-    <line x1="362" y1="236" x2="1200" y2="236" stroke="#c7cbd6" stroke-width="1"/>
-    <text x="362" y="272" font-family="'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace" font-size="10" letter-spacing="1.8" fill="#7a8197">CARTOGRAPHER<tspan fill="#c7cbd6">  ·  </tspan>CANON-FINDER<tspan fill="#c7cbd6">  ·  </tspan>ALTITUDE-CHECK<tspan fill="#c7cbd6">  ·  </tspan>ROOTS<tspan fill="#c7cbd6">  ·  </tspan>FIRST-PRINCIPLES<tspan fill="#c7cbd6">  ·  </tspan>PRE-MORTEM</text>
+    <!-- intercardinal star (recedes, light) -->
+    <polygon points="208.28,151.72 191,180 208.28,208.28 180,191 151.72,208.28 169,180 151.72,151.72 180,169" fill="#8a99b2" fill-opacity="0.55"/>
+    <!-- cardinal star (ink) -->
+    <polygon points="180,116 191.31,168.69 244,180 191.31,191.31 180,244 168.69,191.31 116,180 168.69,168.69" fill="#1a3a6b"/>
+    <!-- north spike (pin red) -->
+    <polygon points="180,116 191.31,168.69 168.69,168.69" fill="#b8341a"/>
+    <!-- hub -->
+    <circle cx="180" cy="180" r="6" fill="#ffffff" stroke="#1a3a6b" stroke-width="1.6"/>
+    <circle cx="180" cy="180" r="2" fill="#1a3a6b"/>
 
-    <rect x="1" y="1" width="1278" height="358" rx="13" fill="none" stroke="#1a3a6b" stroke-width="2"/>
+    <!-- cardinal letters -->
+    <g font-family="'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace" font-size="12" letter-spacing="1" fill="#4a5d7d">
+      <text x="180" y="52" text-anchor="middle" fill="#b8341a">N</text>
+      <text x="318" y="185" text-anchor="middle">E</text>
+      <text x="180" y="322" text-anchor="middle">S</text>
+      <text x="42" y="185" text-anchor="middle">W</text>
+    </g>
   </g>
+
+  <!-- ===== type, right ===== -->
+  <text x="358" y="164" font-family="'Fraunces','Georgia','Times New Roman',serif" font-size="66" font-weight="600" fill="#1a3a6b">META_THEORY</text>
+  <text x="362" y="206" font-family="'Fraunces','Georgia',serif" font-style="italic" font-size="24" fill="#2c6fb5">find your bearings before you build</text>
+  <line x1="362" y1="236" x2="1200" y2="236" stroke="#c7cbd6" stroke-width="1"/>
+  <text x="362" y="272" font-family="'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace" font-size="10" letter-spacing="1.8" fill="#7a8197">CARTOGRAPHER<tspan fill="#c7cbd6">  ·  </tspan>CANON-FINDER<tspan fill="#c7cbd6">  ·  </tspan>ALTITUDE-CHECK<tspan fill="#c7cbd6">  ·  </tspan>ROOTS<tspan fill="#c7cbd6">  ·  </tspan>FIRST-PRINCIPLES<tspan fill="#c7cbd6">  ·  </tspan>PRE-MORTEM</text>
 </svg>

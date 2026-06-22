@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="META_THEORY — map the ladder before you climb it" width="100%">
+  <img src="assets/banner.svg" alt="META_THEORY — find your bearings before you build" width="100%">
 </p>
 
 # META_THEORY

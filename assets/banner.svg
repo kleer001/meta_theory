@@ -1,48 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" font-family="'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif">
-  <defs>
-    <clipPath id="frame"><rect x="0" y="0" width="1280" height="360" rx="14"/></clipPath>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360">
+  <defs><clipPath id="f"><rect width="1280" height="360" rx="14"/></clipPath></defs>
+  <g clip-path="url(#f)">
+    <rect width="1280" height="360" fill="#f4f0e8"/>
 
-  <!-- paper -->
-  <g clip-path="url(#frame)">
-    <rect x="0" y="0" width="1280" height="360" fill="#fafafa"/>
+    <!-- ===== compass rose, centered at (180,180) ===== -->
+    <g>
+      <!-- graduated ring -->
+      <circle cx="180" cy="180" r="118" fill="none" stroke="#8a99b2" stroke-width="1" stroke-opacity="0.7"/>
+      <circle cx="180" cy="180" r="104" fill="none" stroke="#c7cbd6" stroke-width="1"/>
+      <!-- intercardinal ticks (30deg steps) -->
+      <g stroke="#8a99b2" stroke-width="1">
+        <line x1="232" y1="89.94" x2="239" y2="77.8"/><line x1="270.06" y1="128" x2="282.2" y2="121"/>
+        <line x1="270.06" y1="232" x2="282.2" y2="239"/><line x1="232" y1="270.06" x2="239" y2="282.2"/>
+        <line x1="128" y1="270.06" x2="121" y2="282.2"/><line x1="89.94" y1="232" x2="77.8" y2="239"/>
+        <line x1="89.94" y1="128" x2="77.8" y2="121"/><line x1="128" y1="89.94" x2="121" y2="77.8"/>
+      </g>
+      <!-- cardinal ticks (longer) -->
+      <g stroke="#4a5d7d" stroke-width="1.4">
+        <line x1="180" y1="96" x2="180" y2="62"/><line x1="276" y1="180" x2="298" y2="180"/>
+        <line x1="180" y1="264" x2="180" y2="298"/><line x1="84" y1="180" x2="62" y2="180"/>
+      </g>
 
-    <!-- topographic contour lines (the cartographer's map) -->
-    <g fill="none" stroke="#dcdcd4" stroke-width="1.5">
-      <path d="M -40 250 C 180 200, 360 300, 560 250 S 980 200, 1320 270"/>
-      <path d="M -40 285 C 180 240, 360 335, 560 285 S 980 245, 1320 305"/>
-      <path d="M -40 320 C 180 280, 360 365, 560 320 S 980 290, 1320 340"/>
+      <!-- intercardinal star (recedes, light) -->
+      <polygon points="216.77,143.23 194,180 216.77,216.77 180,194 143.23,216.77 166,180 143.23,143.23 180,166" fill="#8a99b2" fill-opacity="0.55"/>
+      <!-- cardinal star (ink) -->
+      <polygon points="180,94 194.14,165.86 266,180 194.14,194.14 180,266 165.86,194.14 94,180 165.86,165.86" fill="#1a3a6b"/>
+      <!-- north spike (pin red) -->
+      <polygon points="180,94 194.14,165.86 165.86,165.86" fill="#b8341a"/>
+      <!-- hub -->
+      <circle cx="180" cy="180" r="7" fill="#f4f0e8" stroke="#1a3a6b" stroke-width="2"/>
+      <circle cx="180" cy="180" r="2.4" fill="#1a3a6b"/>
+
+      <!-- cardinal letters -->
+      <g font-family="'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace" font-size="12" letter-spacing="1" fill="#4a5d7d">
+        <text x="180" y="52" text-anchor="middle" fill="#b8341a">N</text>
+        <text x="318" y="185" text-anchor="middle">E</text>
+        <text x="180" y="322" text-anchor="middle">S</text>
+        <text x="42" y="185" text-anchor="middle">W</text>
+      </g>
     </g>
-    <g fill="none" stroke="#e6e6df" stroke-width="1.2">
-      <path d="M 760 60 C 860 40, 980 90, 1120 55 S 1300 30, 1360 70"/>
-      <path d="M 800 95 C 900 78, 1010 120, 1140 92 S 1310 70, 1360 100"/>
-    </g>
 
-    <!-- altitude ladder: rising rungs into the contour, the spine of mastery -->
-    <g transform="translate(74,96)">
-      <!-- two stiles -->
-      <line x1="0" y1="184" x2="34" y2="0" stroke="#2f6f6a" stroke-width="4" stroke-linecap="round"/>
-      <line x1="56" y1="184" x2="90" y2="0" stroke="#2f6f6a" stroke-width="4" stroke-linecap="round"/>
-      <!-- rungs, lighter as they ascend (foundation = solid, altitude = aspirational) -->
-      <line x1="6"  y1="158" x2="62" y2="158" stroke="#1a1a1a" stroke-width="3.5" stroke-linecap="round"/>
-      <line x1="13" y1="120" x2="69" y2="120" stroke="#1a1a1a" stroke-width="3.2" stroke-linecap="round" opacity="0.85"/>
-      <line x1="20" y1="82"  x2="76" y2="82"  stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
-      <line x1="27" y1="44"  x2="83" y2="44"  stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round" opacity="0.4" stroke-dasharray="2 7"/>
-      <line x1="34" y1="6"   x2="90" y2="6"   stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" opacity="0.25" stroke-dasharray="2 9"/>
-      <!-- you-are-here marker on the solid foundation -->
-      <circle cx="34" cy="158" r="6.5" fill="#fafafa" stroke="#2f6f6a" stroke-width="3"/>
-    </g>
+    <!-- ===== type, right ===== -->
+    <text x="358" y="164" font-family="'Fraunces','Georgia','Times New Roman',serif" font-size="66" font-weight="600" fill="#1a3a6b">META_THEORY</text>
+    <text x="362" y="206" font-family="'Fraunces','Georgia',serif" font-style="italic" font-size="24" fill="#2c6fb5">find your bearings before you build</text>
+    <line x1="362" y1="236" x2="1200" y2="236" stroke="#c7cbd6" stroke-width="1"/>
+    <text x="362" y="272" font-family="'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace" font-size="10" letter-spacing="1.8" fill="#7a8197">CARTOGRAPHER<tspan fill="#c7cbd6">  ·  </tspan>CANON-FINDER<tspan fill="#c7cbd6">  ·  </tspan>ALTITUDE-CHECK<tspan fill="#c7cbd6">  ·  </tspan>ROOTS<tspan fill="#c7cbd6">  ·  </tspan>FIRST-PRINCIPLES<tspan fill="#c7cbd6">  ·  </tspan>PRE-MORTEM</text>
 
-    <!-- wordmark -->
-    <text x="210" y="150" font-size="68" font-weight="700" letter-spacing="6" fill="#1a1a1a">META_THEORY</text>
-    <text x="213" y="196" font-size="27" font-style="italic" fill="#2f6f6a">map the ladder before you climb it</text>
-
-    <!-- tool roster -->
-    <text x="214" y="252" font-family="'SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="18" letter-spacing="1" fill="#555">
-      cartographer<tspan fill="#bbb">  ·  </tspan>canon-finder<tspan fill="#bbb">  ·  </tspan>altitude-check<tspan fill="#bbb">  ·  </tspan>the&#160;maestro
-    </text>
-
-    <!-- frame -->
-    <rect x="1.5" y="1.5" width="1277" height="357" rx="13.5" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+    <rect x="1" y="1" width="1278" height="358" rx="13" fill="none" stroke="#1a3a6b" stroke-width="2"/>
   </g>
 </svg>

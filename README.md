@@ -4,11 +4,12 @@ Tools for plumbing the depths of any creative venture with long, twisted roots â
 music, game-making, storytelling, and other majestic feats â€” *before* you find
 yourself doing PhD work without the arithmetic.
 
-This directory exists because of a specific, repeatable mistake made in this very
-repo: we built a sophisticated procedural-music engine (phase vocoders, genre
-deconstructions, adaptive arrangement) and only *late* noticed we had never
-written down the universal **grammar** of song construction underneath it (see
-[`../research/song_construction_basics.md`](../research/song_construction_basics.md)).
+This kit exists because of a specific, repeatable mistake made in the `cyber_synth`
+project: a sophisticated procedural-music engine (phase vocoders, genre
+deconstructions, adaptive arrangement) was built, and only *late* did anyone
+notice the universal **grammar** of song construction underneath it had never been
+written down (see
+[`song_construction_basics.md`](https://github.com/kleer001/cyber_synth/blob/main/research/song_construction_basics.md)).
 The gap was predictable. This is the kit for predicting it next time, in any
 domain.
 

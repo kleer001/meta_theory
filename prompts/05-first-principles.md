@@ -3,11 +3,9 @@
 > The deepest invariants — *why* the techniques work, the rules that would survive a
 > change of genre, medium, or technology.
 
-A zoom-in on the bottom of the [Cartographer's](./01-cartographer.md) map. This is
-the prompt that produced **Part I (the philosophy)** of this repo's
-[`song_construction_basics.md`](../../research/song_construction_basics.md) —
-tension/release, expectation/surprise, unity/variety, and so on. It converts a pile
-of recipes into a small set of reasons.
+A zoom-in on the bottom of the [Cartographer's](./01-cartographer.md) map — the
+deepest invariants of a craft (in music, say: tension/release, expectation/surprise,
+unity/variety). It converts a pile of recipes into a small set of reasons.
 
 - **Fire when:** after mapping, when you want the principles that *generate* the
   techniques rather than memorizing the techniques themselves.

@@ -66,5 +66,5 @@ is trackable over time.
 ```
 
 Wrapping this in the `loop` skill is the structural fix for a structural problem:
-the "did we skip the foundation?" question — the one that caught this repo's gap —
-stops depending on you remembering to ask it.
+the "did we skip the foundation?" question stops depending on you remembering to
+ask it.

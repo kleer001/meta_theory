@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ontological checkup — trace_rom_studio — 2026-08-12</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #ffffff;
+    --rule: #d4d4d4;
+    --link: #0000cc;
+    --visited: #551a8b;
+    --amber: #ffb000;
+    --blue: #2b52d6;
+    --red: #e03a2f;
+    --green: #1d8a4c;
+    --muted: #5f5f5f;
+    --wash: #f6f6f4;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* --- masthead: a few bold geometric accents, no CRT --- */
+  header.mast {
+    border-bottom: 3px solid var(--ink);
+    padding: 26px 0 14px;
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .marks { display: flex; gap: 6px; margin-bottom: 12px; }
+  .marks i { display: block; width: 22px; height: 22px; }
+  .m1 { background: var(--amber); }
+  .m2 { background: var(--blue); border-radius: 50%; }
+  .m3 { width: 0 !important; height: 0 !important;
+        border-left: 11px solid transparent; border-right: 11px solid transparent;
+        border-bottom: 22px solid var(--red); }
+  .m4 { background: var(--ink); transform: rotate(45deg); width: 16px !important; height: 16px !important; margin: 3px; }
+  h1 { font-size: 27px; margin: 0 0 4px; letter-spacing: -0.4px; }
+  .sub { color: var(--muted); font-size: 13px; margin: 0; }
+  .sub b { color: var(--ink); }
+
+  h2 {
+    font-size: 20px; margin: 38px 0 10px; padding-top: 10px;
+    border-top: 2px solid var(--ink); letter-spacing: -0.3px;
+  }
+  h3 { font-size: 16px; margin: 22px 0 6px; }
+  h4 { font-size: 14px; margin: 16px 0 4px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
+  p, li { margin: 0 0 8px; }
+  ul, ol { margin: 0 0 12px; padding-left: 22px; }
+  li > ul, li > ol { margin-top: 6px; }
+  a { color: var(--link); }
+  a:visited { color: var(--visited); }
+  code, kbd {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em; background: var(--wash); padding: 1px 4px; border: 1px solid var(--rule);
+  }
+  pre {
+    background: var(--wash); border: 1px solid var(--rule); border-left: 4px solid var(--ink);
+    padding: 10px 12px; overflow-x: auto; font-size: 12.5px; line-height: 1.45; margin: 0 0 12px;
+  }
+  pre code { background: none; border: 0; padding: 0; }
+
+  table { border-collapse: collapse; width: 100%; margin: 0 0 14px; font-size: 13.5px; }
+  th, td { border: 1px solid var(--rule); padding: 5px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--wash); font-weight: 700; }
+  .scroller { overflow-x: auto; }
+
+  .toc { background: var(--wash); border: 1px solid var(--rule); padding: 12px 16px 12px 34px; margin: 0 0 8px; font-size: 13.5px; }
+  .toc li { margin-bottom: 3px; }
+
+  .lede { font-size: 16px; border-left: 5px solid var(--amber); padding-left: 14px; margin-bottom: 18px; }
+
+  .verdict { border: 2px solid var(--ink); padding: 12px 16px; margin: 0 0 18px; background: var(--wash); }
+  .verdict p:last-child { margin-bottom: 0; }
+
+  .finding { border: 1px solid var(--rule); border-left: 6px solid var(--rule); padding: 10px 14px; margin: 0 0 12px; }
+  .finding h4 { margin-top: 0; color: var(--ink); text-transform: none; letter-spacing: 0; font-size: 15px; }
+  .f-good { border-left-color: var(--green); }
+  .f-marg { border-left-color: var(--amber); }
+  .f-bad  { border-left-color: var(--red); }
+  .f-far  { border-left-color: var(--blue); }
+  .f-short{ border-left-color: #8a4fc4; }
+
+  .tag {
+    display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px;
+    text-transform: uppercase; padding: 1px 6px; margin-right: 7px; vertical-align: 2px;
+    border: 1px solid var(--ink); background: var(--paper);
+  }
+  .t-conf { background: var(--red); color: #fff; border-color: var(--red); }
+  .t-obs  { background: var(--amber); border-color: var(--amber); }
+  .t-jud  { background: var(--paper); color: var(--muted); border-color: var(--rule); }
+
+  .prio { font-weight: 700; }
+  .p1 { color: var(--red); }
+  .p2 { color: #b06a00; }
+  .p3 { color: var(--muted); }
+
+  .ladder { font-size: 13.5px; }
+  .ladder td:first-child { white-space: nowrap; font-weight: 700; }
+  .rung-ok { color: var(--green); font-weight: 700; }
+  .rung-gap { color: var(--red); font-weight: 700; }
+  .rung-part { color: #b06a00; font-weight: 700; }
+
+  footer { margin-top: 44px; border-top: 2px solid var(--ink); padding-top: 12px; font-size: 12.5px; color: var(--muted); }
+  .backtop { font-size: 12px; }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 20px 0; }
+  .small { font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast" id="top">
+  <div class="marks"><i class="m1"></i><i class="m2"></i><i class="m3"></i><i class="m4"></i></div>
+  <h1>Ontological checkup — <code style="font-size:0.85em">trace_rom_studio</code></h1>
+  <p class="sub">
+    <b>Date:</b> 2026-08-12 &nbsp;·&nbsp;
+    <b>Auditor:</b> META_THEORY, all six lenses &nbsp;·&nbsp;
+    <b>Target:</b> <code>kleer001/trace_rom_studio</code> @ <code>56a6a6e</code>, VERSION 0.19.0, 65 commits &nbsp;·&nbsp;
+    <b>Mandate:</b> report only — nothing in the target was modified
+  </p>
+</header>
+
+<div class="toc">
+  <ol>
+    <li><a href="#brief">Executive brief</a></li>
+    <li><a href="#method">Method &amp; evidence base</a></li>
+    <li><a href="#lenses">The six lenses</a>
+      <ul>
+        <li><a href="#cartographer">1 · Cartographer — the ladder, and where this repo sits on it</a></li>
+        <li><a href="#canon">2 · Canon-finder — the foundation that was never written down</a></li>
+        <li><a href="#roots">3 · Roots — four inventions with unnamed ancestors</a></li>
+        <li><a href="#principles">4 · First principles — the studio's own invariants, tested against itself</a></li>
+        <li><a href="#altitude">5 · Altitude check — the present-tense verdict</a></li>
+        <li><a href="#premortem">6 · Pre-mortem — six months out</a></li>
+      </ul>
+    </li>
+    <li><a href="#findings">Main findings</a>
+      <ul>
+        <li><a href="#good">What is good</a></li>
+        <li><a href="#marginal">What is marginal</a></li>
+        <li><a href="#wrong">What is wrong</a></li>
+        <li><a href="#toofar">What went too far</a></li>
+        <li><a href="#notfar">What didn't go far enough</a></li>
+      </ul>
+    </li>
+    <li><a href="#advice">Advice — the mother repo</a></li>
+    <li><a href="#daughters">Advice — the daughter repos</a></li>
+    <li><a href="#conclusions">Conclusions</a></li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</div>
+
+<p class="small">
+  Claim tags: <span class="tag t-conf">verified</span> reproduced against the working tree or git history, with the command shown ·
+  <span class="tag t-obs">measured</span> a count or ratio taken from the tree ·
+  <span class="tag t-jud">judgement</span> an opinion, arguable.
+</p>
+
+<!-- ============================================================ -->
+<h2 id="brief">1 · Executive brief</h2>
+
+<p class="lede">
+  Trace ROM Studio is an unusually well-built machine for the <em>last</em> two-thirds of a game's
+  life and has almost nothing written down about the first third. It can take a game that already
+  exists and ship it honestly — package it, gate it, market it without lying, and propagate the
+  lesson to its siblings. It cannot tell you whether the game is any good, and it has never
+  written down how anyone would know.
+</p>
+
+<div class="verdict">
+  <p><b>Altitude verdict: yes, the repo is operating above its foundation — and it is the textbook shape of it.</b>
+  The ladder from "can run a canvas" to "ships a game people play" has roughly six rungs. This repo has
+  built rungs 4, 5 and 6 to a professional standard — a publishing runbook full of failure modes that
+  report success, a release gate wired into CI so the marketing physically cannot precede the game, and a
+  cross-repo convention-propagation system with a version pin, a directive format and a parser. Rung 2 —
+  <em>the craft of game design itself</em> — is empty. There is no document in this repo that says what
+  makes a core loop good, and four persona sheets that ask about it.</p>
+  <p>This is not a lapse of diligence. It is exactly the failure META_THEORY was written to name: every
+  individual step was reasonable, the model answered each question at the altitude it was asked, and the
+  accumulation is a studio that has a 215-line runbook on itch.io's form-validation behaviour and zero
+  lines on difficulty curves.</p>
+</div>
+
+<h4>The five things worth acting on, in order</h4>
+<ol>
+  <li><b><span class="prio p1">P1</span> — A CONTRACT-tier directive has already been silently destroyed.</b>
+      The <code>## [0.15.0]</code> section of <code>CHANGELOG.md</code> was overwritten by the 0.16.0 bump.
+      Its body survives, mis-filed under 0.16.0. This is the precise failure
+      <code>CONTRIBUTING.md</code> warns about in writing, it happened in the studio's own repo, and
+      nothing detected it — because the delivery mechanism has no test and CI does not run when it changes.
+      <a href="#w1">Detail →</a></li>
+  <li><b><span class="prio p1">P1</span> — Two shipped scripts cannot run from a fresh clone.</b>
+      <code>capture.sh</code> hard-depends on a file in a <em>different, private GitHub repo</em> at a
+      hard-coded sibling path; <code>post.sh</code> requires a <code>.ttf</code> the template does not ship.
+      Every daughter carries both. <a href="#w2">Detail →</a></li>
+  <li><b><span class="prio p1">P1</span> — Write the missing rung.</b> One page — call it
+      <code>DESIGN.md</code> — that says what a good core loop is, so <code>GAME-SHEET.md</code>'s
+      questions have an answer key and the panel has a rubric instead of four temperaments.
+      <a href="#a1">Detail →</a></li>
+  <li><b><span class="prio p2">P2</span> — Beta is defined as "someone who isn't you plays it" and there is
+      no playtest protocol.</b> The single highest-value observation loop in game-making is one sentence long.
+      <a href="#a2">Detail →</a></li>
+  <li><b><span class="prio p2">P2</span> — Stop bumping.</b> Twenty versions in thirty days, the last four all
+      refining curator-outreach ranking for games that have not shipped. Adopt a rule that
+      <code>VERSION</code> moves only when a game shipped or a daughter asked. <a href="#a5">Detail →</a></li>
+</ol>
+
+<p><b>What this repo does not need:</b> more process. It is already the most carefully-reasoned
+per-line body of studio prose I have read in a hobby repo, and that is also the diagnosis.</p>
+
+<p class="backtop"><a href="#top">↑ top</a></p>
+
+<!-- ============================================================ -->
+<h2 id="method">2 · Method &amp; evidence base</h2>
+
+<p>All six META_THEORY prompts were run against the target. The map-phase three
+(<a href="#cartographer">cartographer</a>, <a href="#canon">canon-finder</a>,
+<a href="#roots">roots</a>) were reconstructed rather than read, because the repo carries no committed
+foundation baseline — which is itself the headline finding. The audit-phase two
+(<a href="#altitude">altitude-check</a>, <a href="#premortem">pre-mortem</a>) were run against the working
+tree and the full 65-commit history.</p>
+
+<p>Every file in the repo was read in full except <code>CHANGELOG.md</code> (664 lines, read at the
+structural level plus the four most recent releases and the two disputed sections),
+<code>post.sh</code> and <code>capture.sh</code> (read for interfaces, dependencies and failure paths
+rather than ffmpeg plumbing), and the two <code>.claude/skills/</code> specs (read to their scope
+sections). The template's test suite was executed. <code>check_updates.py</code> was executed against the
+template. Every external work cited in <a href="#references">§8</a> was verified by search before being
+named; none is cited from memory.</p>
+
+<h4>Measurements</h4>
+<div class="scroller">
+<table>
+<tr><th>Quantity</th><th>Value</th><th>How taken</th></tr>
+<tr><td>Total tracked source (md/js/sh/py/html/css/yml/json)</td><td>≈ 4,800 lines</td><td><code>wc -l</code> over the tree, <code>.git</code> excluded</td></tr>
+<tr><td>Prose (all <code>.md</code>, studio + template + publishing + skills)</td><td>≈ 2,900 lines</td><td>same, filtered to <code>*.md</code></td></tr>
+<tr><td>Game source shipped in the template (<code>template/src/</code>)</td><td>288 lines</td><td><code>rng</code> 17 · <code>compositor</code> 65 · <code>main</code> 83 · <code>logo</code> 123</td></tr>
+<tr><td><b>Prose : game source</b></td><td><b>≈ 10 : 1</b></td><td>derived</td></tr>
+<tr><td>Tests, all in <code>template/tests/</code></td><td>160 lines, 15 assertions, all passing</td><td><code>npm test</code> — 15 pass, 0 fail</td></tr>
+<tr><td>Tests covering <code>scripts/check_updates.py</code></td><td>0</td><td>no test file exists; CI path filter is <code>template/**</code></td></tr>
+<tr><td>Releases in <code>CHANGELOG.md</code></td><td>19 headings for 20 versions</td><td><code>grep -n "^## \["</code> — 0.15.0 absent</td></tr>
+<tr><td>Project age at audit</td><td>0.1.0 on 2026-07-12 → 0.19.0 on 2026-08-10 (~30 days)</td><td><code>git log -p -- VERSION</code></td></tr>
+<tr><td>Daughters found on this machine</td><td>3 — pinned 0.19.0, 0.13.0, 0.9.0</td><td><code>.trace_rom_studio_version</code> in each</td></tr>
+</table>
+</div>
+
+<p class="backtop"><a href="#top">↑ top</a></p>
+
+<!-- ============================================================ -->
+<h2 id="lenses">3 · The six lenses</h2>
+
+<h3 id="cartographer">3.1 · Cartographer — the ladder, and where this repo sits on it</h3>
+
+<p>The domain is <em>solo browser-game production, concept to shipped itch.io release</em>. The ladder a
+serious practitioner climbs, in learning order, with this repo's coverage marked:</p>
+
+<div class="scroller">
+<table class="ladder">
+<tr><th>Rung</th><th>What it is</th><th>Coverage</th><th>Where it lives, or should</th></tr>
+<tr>
+  <td>L0 · Arithmetic</td>
+  <td>Git, JS, the canvas API, serving a page, a test runner.</td>
+  <td class="rung-ok">Complete</td>
+  <td><code>template/</code>, <code>run.sh</code>, <code>package.json</code></td>
+</tr>
+<tr>
+  <td>L1 · Design foundation</td>
+  <td>What a core loop <em>is</em> and what makes one hold. Uncertainty, feedback, mastery curve, game feel, the second-hour problem, when a toy is enough.</td>
+  <td class="rung-gap">ABSENT</td>
+  <td>Nowhere. <code>GAME-SHEET.md</code> asks the questions; nothing answers them.</td>
+</tr>
+<tr>
+  <td>L2 · Production craft</td>
+  <td>Prototyping, scoping to a vertical slice, <em>playtest method</em>, iterating on observation rather than opinion.</td>
+  <td class="rung-part">Half</td>
+  <td>Scope and slice are well handled in <code>MAKING-A-GAME.md</code>. Playtest method is one sentence: "someone who isn't you plays it."</td>
+</tr>
+<tr>
+  <td>L3 · Systems &amp; tech</td>
+  <td>Determinism, layered rendering, code/data separation, testable pure cores, boundary validation.</td>
+  <td class="rung-ok">Strong</td>
+  <td><code>CLAUDE.md</code>, <code>compositor.js</code>, <code>rng.js</code>, the test suite</td>
+</tr>
+<tr>
+  <td>L4 · Ship &amp; publish</td>
+  <td>Packaging, store-page mechanics, the platform's real failure modes, honest copy, launch beats.</td>
+  <td class="rung-ok">Expert</td>
+  <td><code>publishing/</code> — and <code>PUBLISHING-RUNBOOK.md</code> is the best file in the repo</td>
+</tr>
+<tr>
+  <td>L5 · Studio meta</td>
+  <td>Convention versioning across a family of repos; propagating a lesson learned in one game to the others.</td>
+  <td class="rung-ok">Novel</td>
+  <td><code>VERSION</code> + <code>CHANGELOG.md</code> + <code>check_updates.py</code> + the stamp</td>
+</tr>
+</table>
+</div>
+
+<p><b>The verdict the Cartographer exists to produce:</b> the goal ("raise game concepts into shipped
+games") lands at L4–L5. The rungs beneath it that are not established are <b>L1 entirely</b> and
+<b>the observation half of L2</b>. Are they safe to skip?</p>
+
+<ul>
+  <li><b>L1 is a load-bearing trap.</b> Skipping it does not make games fail to ship — this studio will
+      ship them. It makes them fail to be good, silently, with no diagnostic available, because the studio
+      has no vocabulary in which "the loop is thin" is a checkable statement rather than a feeling. The
+      panel is designed to catch exactly this and is given no criteria to catch it with: the Shipper asks
+      "is there a core loop?", the Critic asks "does the mechanic say what the fiction says?", and nothing
+      in the repo tells either of them what a good answer looks like. Four temperaments arguing without a
+      rubric produce a mood, not a verdict.</li>
+  <li><b>The L2 gap is cheap to fix and expensive to leave.</b> "Someone who isn't you plays it" is the
+      right instinct pointed at the right moment, and it omits everything that makes a playtest worth
+      running: don't explain the controls, watch the hands not the face, note the first hesitation, never
+      defend the design in the room, write it down before discussing it. That is half a page. Without it,
+      the beta label is a social event.</li>
+</ul>
+
+<p class="small"><span class="tag t-jud">judgement</span> The ladder above is a reconstruction; a different
+practitioner would split L3/L4 differently. The <em>gap location</em> is not sensitive to that — no
+plausible partition of this domain puts design craft anywhere but below publishing craft.</p>
+
+<h3 id="canon">3.2 · Canon-finder — the foundation that was never written down</h3>
+
+<p><code>RESEARCH.md</code> is emphatic: <em>"Ground mechanics in precedent. Name the games, designers, and
+patterns an idea descends from… reach for the original (Rogue, 1980; not a 2024 listicle."</em> The studio
+demands lineage of every game it raises and has recorded none of its own field's canon.</p>
+
+<p><span class="tag t-obs">measured</span> Every named external work in the entire repo, across all
+~2,900 lines of prose: <em>Rogue</em> (1980), <em>Ultima Underworld</em>, <em>System Shock</em>,
+<em>Dominion</em> (2008), <em>Slay the Spire</em> (2017), and the Saul Bass AT&amp;T globe (1983) in a code
+comment. All six sit inside persona character sheets or source comments, as illustrations of how a persona
+talks. Not one appears in a document a session would read to <em>learn</em> something.</p>
+
+<p>The canon that is missing, ranked by how load-bearing it is for <em>this</em> studio specifically —
+a one-person, browser-game, short-session operation. Access status matters here per the canon-finder's own
+instruction: pin the gated ones now.</p>
+
+<div class="scroller">
+<table>
+<tr><th>#</th><th>Work</th><th>What it teaches this studio</th><th>Access</th></tr>
+<tr><td>1</td><td><b>MDA: A Formal Approach to Game Design and Game Research</b> — Hunicke, LeBlanc &amp; Zubek, AAAI Workshop on Challenges in Game AI, 2004</td>
+    <td>The Mechanics → Dynamics → Aesthetics split. <code>GAME-SHEET.md</code> is already groping toward this — "core loop" is M, "why it's fun in 30 seconds" is A — and MDA is the vocabulary that connects them and explains why designers and players read a game from opposite ends. Nine pages. If only one item on this list is read, this is it.</td>
+    <td><b>free</b> (AAAI library, PDF)</td></tr>
+<tr><td>2</td><td><b>Formal Abstract Design Tools</b> — Doug Church, <em>Game Developer</em> / Gamasutra, 16 July 1999</td>
+    <td>The argument that game design lacks a shared vocabulary, and the first serious attempt to build one (intention, perceivable consequence, story). This repo's whole problem is that it built a vocabulary for <em>process</em> and none for <em>design</em>. Church names the disease.</td>
+    <td><b>free</b> (gamedeveloper.com reprint)</td></tr>
+<tr><td>3</td><td><b>A Theory of Fun for Game Design</b> — Raph Koster; Paraglyph 2004, 2nd ed. O'Reilly 2013</td>
+    <td>Fun as the sensation of a pattern being learned, and boredom as the pattern's exhaustion. This is the direct answer to the Critic's "the second hour" question, and to the Shipper's "is it fun in 30 seconds." Two hours to read; half of it is illustrations.</td>
+    <td>paywalled (short, cheap)</td></tr>
+<tr><td>4</td><td><b>Game Design Workshop: A Playcentric Approach</b> — Tracy Fullerton; 4th ed. 2018 (1st 2004, 5th 2023)</td>
+    <td>The canonical playtest protocol — who to test with at which stage, what to say, what not to say, what to record. This is the missing L2 half, already written by someone else. Nothing else on this list would change day-to-day practice more.</td>
+    <td>paywalled (textbook, library-common)</td></tr>
+<tr><td>5</td><td><b>Game Feel: A Game Designer's Guide to Virtual Sensation</b> — Steve Swink; Morgan Kaufmann, 2008</td>
+    <td>Why real-time input feels good or dead: response, context, polish, metaphor. Directly actionable on a canvas game with a hand-rolled loop, where every frame of input latency is the studio's own doing.</td>
+    <td>paywalled</td></tr>
+<tr><td>6</td><td><b>Uncertainty in Games</b> — Greg Costikyan; MIT Press, 2013</td>
+    <td>A taxonomy of the uncertainty types that make games hold attention (performative, solver's, randomness, hidden information, narrative anticipation). This studio mandates a seeded PRNG in every game and has never written down <em>what the randomness is for</em>. 152 pages.</td>
+    <td>paywalled (short)</td></tr>
+<tr><td>7</td><td><b>Rules of Play: Game Design Fundamentals</b> — Katie Salen &amp; Eric Zimmerman; MIT Press, 25 Sept 2003</td>
+    <td>The field's standard theoretical text; eighteen design schemas. Reference-grade rather than read-through — the thing you consult when a design argument needs a frame.</td>
+    <td>paywalled (large)</td></tr>
+<tr><td>8</td><td><b>The Art of Game Design: A Book of Lenses</b> — Jesse Schell; 3rd ed. 2019 (1st 2008)</td>
+    <td>Over 100 "lenses," each a small set of questions to aim at a design. <b>This is the direct prior art for <code>personas/</code></b> — see <a href="#roots">Roots</a> — and the source to mine for the rubric the panel currently lacks.</td>
+    <td>paywalled</td></tr>
+<tr><td>9</td><td><b>Patterns in Game Design</b> — Staffan Björk &amp; Jussi Holopainen; Charles River Media, 2005</td>
+    <td>A pattern catalogue in the Alexander/GoF sense. Optional — but it is the closest thing the field has to the "named precedent" <code>RESEARCH.md</code> demands, in a form you can look things up in.</td>
+    <td>paywalled; companion site <code>gameplaydesignpatterns.org</code> is free</td></tr>
+</table>
+</div>
+
+<p><b>What to do with this list:</b> not read all of it. Items 1 and 2 are free, total about forty pages,
+and between them supply the vocabulary the L1 document needs. Item 4 supplies the playtest protocol. That
+is the whole prescription; items 3, 5–9 are the shelf behind it.</p>
+
+<h3 id="roots">3.3 · Roots — four inventions with unnamed ancestors</h3>
+
+<p>The Roots lens asks what older disciplines a craft borrowed from, so its rules stop feeling arbitrary.
+Applied to this repo it produces something sharper than genealogy: <b>four of the studio's five signature
+inventions have well-documented prior art the repo does not name.</b> This matters not as an accusation of
+unoriginality — several of these are genuine improvements on their ancestors — but because
+<code>RESEARCH.md</code> makes lineage-tracing a house rule, and the house has not applied it to itself.
+Knowing the ancestor is also how you inherit its solved problems.</p>
+
+<div class="scroller">
+<table>
+<tr><th>The invention</th><th>Its ancestor</th><th>What the lineage would buy</th></tr>
+<tr>
+  <td><b>The version stamp + directive + <code>check_updates.py</code></b><br><span class="small">A daughter records which template version it descends from; the template publishes changes; the daughter pulls them forward.</span></td>
+  <td><b>Copier</b> (and before it cookiecutter + cruft, Yeoman, Rails app templates). Copier writes <code>_commit</code> into <code>.copier-answers.yml</code> and <code>copier update</code> replays template changes onto the project.</td>
+  <td>Copier solved this six ways and hit walls this repo will hit: what happens when the daughter edited the file the directive targets; how to record answers so an update is a three-way merge rather than a clobber; why <em>never hand-edit the answers file</em> is a hard rule. Trace ROM's version is deliberately different and <b>better in one specific way</b> — it delivers a <em>proposal a reasoning agent interprets</em> rather than a patch, which is the right call for prose conventions that no diff algorithm can merge. That is a real contribution and it deserves to be stated as such, against a named ancestor, instead of arriving unremarked.</td>
+</tr>
+<tr>
+  <td><b>The persona panel</b><br><span class="small">Four standing lenses whose disagreement is the product.</span></td>
+  <td><b>Schell's <em>Book of Lenses</em></b> (2008/2019) — the same move, at finer grain: 100+ named question-sets you aim at a design one at a time. Behind that, de Bono's Six Thinking Hats (1985) for the "one voice at a time, deliberately" mechanic, and red-teaming for adversarial review.</td>
+  <td>Schell's lenses are <em>criteria</em>; this repo's panel is <em>temperaments</em>. That is precisely the L1 gap in miniature — the panel knows how four people would feel and not what any of them should measure. Mining Schell for the ten lenses that matter to a browser roguelike and stapling them to the persona sheets converts four moods into four checklists, at a cost of about a page.</td>
+</tr>
+<tr>
+  <td><b>The release gate — one hard stop, closed until it applies</b></td>
+  <td><b>Aviation checklists</b> via Gawande's <em>Checklist Manifesto</em> (2009), and specifically the <b>DO-CONFIRM vs READ-DO</b> distinction.</td>
+  <td>The repo got this <em>right by instinct</em> and cannot currently defend it. <code>RELEASE-CHECKLIST.md</code> is a DO-CONFIRM list — you do the work, then confirm at a pause point — and the studio's insistence that it stay closed until beta, never be pre-ticked, and never be partially tracked is exactly the correct handling of that type. Naming the distinction turns three paragraphs of assertion into one sentence of citation, and tells a future session which <em>other</em> checklists in the repo are READ-DO (the publishing pre-publish checks) and therefore have opposite rules.</td>
+</tr>
+<tr>
+  <td><b>Budding — <code>git subtree split</code> then prune</b></td>
+  <td>Named and handled correctly. <code>BUDDING.md</code> cites <code>subtree split</code>, <code>filter-repo</code>, <code>bundle</code>, <code>fast-export</code>, <code>format-patch</code>, and is honest that <code>git rm</code> prunes the tip and not the past.</td>
+  <td class="rung-ok">No gap. This is what the other three should look like.</td>
+</tr>
+</table>
+</div>
+
+<p><b>The transplantable principle</b> the Roots lens asks for: from the checklist lineage — <em>a checklist
+is for the steps a competent person skips under load, not for the steps they do not know.</em> The studio
+has applied this to shipping. It has not applied it to design, where the equivalent artifact would be a
+short list of the questions a designer reliably forgets to ask while excited about a mechanic. That is one
+plausible shape for the missing L1 document, and it is a shape this repo already knows how to build.</p>
+
+<h3 id="principles">3.4 · First principles — the studio's own invariants, tested against itself</h3>
+
+<p>This repo is unusual in that it has largely <em>derived</em> its own first principles already; they are
+scattered through <code>CLAUDE.md</code> as terse, well-argued rules. Extracting them and testing each
+against the repo's own behaviour is the most productive thing this lens can do here.</p>
+
+<div class="scroller">
+<table>
+<tr><th>The invariant, as the repo states it</th><th>Held?</th><th>Evidence</th></tr>
+<tr>
+  <td><b>One source of truth. "A sentence describing what the code does is a copy."</b></td>
+  <td class="rung-gap">Violated</td>
+  <td>The house conventions — naming, boundary validation, test discipline, SOLID, commit format — are written out in full <b>three times</b>: <code>CLAUDE.md</code> § Code conventions, <code>template/CLAUDE.md</code> § Conventions + § Architecture, and <code>template/README.md</code> § Conventions. That is roughly 200 lines of near-duplicated prose, each copy free to drift, under a rule that forbids exactly this. The rule is applied ruthlessly to prose-about-code and not at all to prose-about-prose.</td>
+</tr>
+<tr>
+  <td><b>A rule nobody can check is a suggestion.</b> <span class="small">(The repo never says this outright; it acts on it constantly — the PreToolUse hook, the CI grep, the Pages gate.)</span></td>
+  <td class="rung-part">Held twice, broken once — at the worst spot</td>
+  <td>The panel-name rule gets <em>two</em> enforcement mechanisms for a one-person studio. The CHANGELOG heading format — which <code>CONTRIBUTING.md</code> itself calls <em>"machine-read — get it wrong and delivery breaks silently"</em> — gets none, and broke silently. See <a href="#w1">W1</a>.</td>
+</tr>
+<tr>
+  <td><b>A description nothing executes will rot.</b></td>
+  <td class="rung-part">Applied asymmetrically</td>
+  <td>Applied with real courage to <code>SPEC-SHEET.md</code> — deleting a design document once the code answers it is a genuinely unusual and correct call. Not applied to the ~2,900 lines of studio prose, which nothing executes either. The repo has one honest defence here (its reader is a future session, not the code) and it holds for <code>PUBLISHING-RUNBOOK.md</code>; it holds much less well for the third copy of the naming conventions.</td>
+</tr>
+<tr>
+  <td><b>Pay a gate's cost at the moment it is about.</b></td>
+  <td class="rung-ok">Held, and well</td>
+  <td>The staging of <code>publishing/</code> (opens when the slice plays), <code>RELEASE-CHECKLIST.md</code> (opens after beta), and the panel (convenes twice, on something playable) is the single best structural idea in the repo. It is why the apparatus is affordable at all.</td>
+</tr>
+<tr>
+  <td><b>Feedback from a shipped game is what improves a studio.</b> <span class="small">(Never stated. Practised once.)</span></td>
+  <td class="rung-part">Practised, undocumented, drying up</td>
+  <td>Commit <code>f817666</code>: <em>"harvest the dev-server, packaging and CI conventions from a daughter."</em> That is the healthiest mechanism in the entire repo — a real lesson, learned in a real game, promoted to a convention. It has happened once in twenty versions. The other nineteen bumps were authored in the studio, about the studio. This invariant deserves to be written down and made the <em>default</em> justification for a bump.</td>
+</tr>
+</table>
+</div>
+
+<h3 id="altitude">3.5 · Altitude check — the present-tense verdict</h3>
+
+<p><em>"What would a master of this craft be surprised we don't have written down?"</em> — cheapest fix
+first:</p>
+
+<ol>
+  <li><b>What makes a core loop good</b> (½ day). A working solo designer would be startled that a repo
+      with four critique personas, a release gate and a marketing plan has no page answering the question
+      all four personas are built to ask.</li>
+  <li><b>How to run a playtest</b> (1 hour). Beta is <em>defined</em> by an outsider playing it. Nothing
+      says what to do while they do.</li>
+  <li><b>Why this game uses a seeded PRNG</b> (1 hour). The house rule "never <code>Math.random()</code>"
+      is enforced culturally and by convention; the <em>design</em> reason randomness exists in a game —
+      which uncertainty it is buying — is unwritten, so a game can be perfectly deterministic and perfectly
+      arbitrary.</li>
+  <li><b>The studio's own lineage</b> (2 hours). Per <a href="#roots">§3.3</a>. The repo demands this of
+      every mechanic it raises.</li>
+  <li><b>A design-canon index</b> (2 hours). Per <a href="#canon">§3.2</a>. Items 1–2 are free; pin the
+      paywalled ones by title, author, edition and ISBN while the question is live.</li>
+  <li><b>What a finished game taught the studio</b> (ongoing). A short log of conventions harvested from
+      daughters, so the bump ratio is visible and the healthy mechanism is the named one.</li>
+</ol>
+
+<p>Note what is <em>not</em> on this list: nothing about publishing, packaging, CI, versioning, honesty
+policy, or code architecture. Those rungs are done. This is a narrow, cheap, one-week gap sitting
+underneath a month of excellent work.</p>
+
+<h3 id="premortem">3.6 · Pre-mortem — six months out</h3>
+
+<p><b>The story, told from February 2027:</b></p>
+
+<p class="lede">Trace ROM Studio is at 0.41.0. The changelog is 1,900 lines. Three daughters are pinned at
+0.13, 0.9 and 0.24, because adopting a directive costs a session and there are now thirty of them
+outstanding across the family — several superseded by later ones, with nothing in the format that says so.
+The last eleven bumps were about outreach copy, page metadata and the wording of the honesty guardrails.
+No game has shipped. The studio is in excellent health and produces documents about game-making.</p>
+
+<p><b>The root cause is not laziness — it is that the repo has a feedback loop for process quality and none
+for game quality.</b> Process improvements can be authored from inside the studio, in an afternoon, and
+they always feel productive. Game-design improvements require a game, a player, and an uncomfortable
+observation. When only one of those two loops is closed, the studio's effort flows into it by gravity, and
+every individual bump is defensible.</p>
+
+<p><span class="tag t-obs">measured</span> The trend is already visible: of the last ten version bumps,
+<b>six</b> concern publishing, marketing or process wording; <b>one</b> concerns game-facing platform
+behaviour (0.16.0, keyboard focus in the itch embed — and note that one came from a real platform failure,
+which is exactly the healthy kind); <b>zero</b> concern design craft. The three most recent bumps
+(0.17, 0.18, 0.19) are successive refinements of <em>how to rank curators for outreach</em> — a step no
+game in the family has yet performed.</p>
+
+<p><b>The scaffolding that should exist now:</b> the L1 document, so that "the loop is thin" becomes a
+sentence the studio can check rather than a feeling it can only have.</p>
+
+<p><b>The single highest-leverage action before proceeding:</b> a standing rule that
+<code>VERSION</code> does not move unless <b>(a)</b> a game shipped, <b>(b)</b> a daughter hit the problem
+in a real build, or <b>(c)</b> the change is to the design foundation. Commit <code>f817666</code> is the
+model. Everything else waits in <code>BREADCRUMB.md</code> until a game asks for it. This costs nothing,
+requires no new document, and would have prevented three of the last four bumps.</p>
+
+<p class="backtop"><a href="#top">↑ top</a></p>
+
+<!-- ============================================================ -->
+<h2 id="findings">4 · Main findings</h2>
+
+<h3 id="good">4.1 · What is good</h3>
+
+<div class="finding f-good">
+<h4>G1 · <code>PUBLISHING-RUNBOOK.md</code> is expert-tier and rare</h4>
+<p>215 lines of platform behaviour that is not discoverable from any dashboard, organised around a single
+correct principle stated in the second paragraph: <em>"Every item is a failure mode that reports
+success."</em> The itch.io form posting every field and silently reverting untouched ones; all-or-nothing
+validation where an over-length tagline discards edits to fields you did care about; the rich-text editor
+syncing into a hidden textarea; the "play in browser" flag clearing on every build replacement;
+screenshot deletion gated behind a confirm dialog that automation dismisses. This is the kind of knowledge
+that normally exists only as scar tissue in one person's head. Writing it down is the single most
+valuable thing in this repo.</p>
+</div>
+
+<div class="finding f-good">
+<h4>G2 · The release gate is mechanical, not a promise</h4>
+<p><code>pages.yml</code> greps <code>RELEASE-CHECKLIST.md</code> for the sign-off sentinel and physically
+deletes <code>publishing/</code> from the Pages artifact until it is ticked. The marketing cannot precede
+the game it markets, and the enforcement is not a rule a session can forget. The workflow comment goes
+further and states the coupling as a hazard — <em>"move the sentinel line and this step moves with it: a
+miss here withholds the page forever while the deploy still reports success"</em> — which is the correct
+way to document a load-bearing string. Converting a policy into a mechanism is the repo's best habit.</p>
+</div>
+
+<div class="finding f-good">
+<h4>G3 · "Never write a persona's words to a file" is a genuine insight</h4>
+<p>The reasoning is stated once and is right: <em>"a constraint nobody can check the reason for is a
+constraint nobody can renegotiate."</em> An invented character's opinion, written to disk, reads back next
+session as a specification — including to the assistant that invented it. Very few AI-assisted workflows
+have noticed this failure mode at all. <span class="tag t-jud">judgement</span> The enforcement is
+disproportionate (see <a href="#f1">F1</a>), but the observation is a real contribution.</p>
+</div>
+
+<div class="finding f-good">
+<h4>G4 · Proposal-not-patch is the right call for the update tie</h4>
+<p><code>check_updates.py</code> prints directives and refuses to apply them; the pin only advances via an
+explicit <code>--mark-read</code>. For prose conventions — which no merge algorithm can reconcile — routing
+the update through a reasoning agent that reads the cited studio files and compares them to the game is
+strictly better than a diff. This is where the repo genuinely improves on its ancestor
+(<a href="#roots">§3.3</a>), and the improvement is unclaimed.</p>
+</div>
+
+<div class="finding f-good">
+<h4>G5 · The template code is small, pure and honestly tested</h4>
+<p><code>compositor.js</code> is 65 lines and earns its abstraction: one contract
+(<code>{ name, draw(ctx, frame) }</code>), <code>save()</code>/<code>restore()</code> isolation between
+layers, and <code>activeLayers()</code> factored out as a pure function specifically so the
+ordering-and-visibility rule is testable without a canvas. The tests assert the <em>contract</em> — draw
+order, skip-when-disabled, save/restore nesting, boundary rejection — not the pixels, which is exactly the
+discipline <code>CLAUDE.md</code> demands ("a test asserts what the code implements; what merely follows
+from two rules meeting is an observation"). <span class="tag t-conf">verified</span> 15/15 pass.</p>
+</div>
+
+<div class="finding f-good">
+<h4>G6 · Staged apparatus — each gate opens at the moment it is about</h4>
+<p><code>publishing/</code> closed until the slice plays; <code>RELEASE-CHECKLIST.md</code> closed until
+after beta, with explicit instructions <em>not</em> to pre-tick or track partial progress; the panel
+convening only on something playable; <code>SPEC-SHEET.md</code> deleted the moment code answers it. Each
+piece of apparatus is cheap precisely because it is worked once. This is what makes a process this heavy
+survivable at all, and it is the design decision most worth keeping.</p>
+</div>
+
+<div class="finding f-good">
+<h4>G7 · <code>BUDDING.md</code> is honest about its own limits</h4>
+<p>Leads with the history-preserving path, marks the file-transfer variants as workarounds for a constraint
+rather than upgrades, gates the destructive prune behind a verification step, and closes by stating plainly
+that <code>git rm</code> prunes the tip and not the past — <em>"don't claim the folder is 'gone from the
+repo' when its blobs are still in history."</em> Correct, and correctly caveated.</p>
+</div>
+
+<div class="finding f-good">
+<h4>G8 · Small earned lessons, kept</h4>
+<p><code>run.sh</code> scans upward for a free port and says so when it moves, and sets no-cache headers
+because <em>"a browser will serve stale JS on reload and you debug code that is not running."</em>
+<code>package.sh</code> documents itch's three real constraints (index.html at the archive root, .zip only,
+&lt;1000 files) and why zipping the project folder fails. <code>test.yml</code> installs only when a
+lockfile exists. Each is one comment long and each encodes an afternoon someone already lost.</p>
+</div>
+
+<h3 id="marginal">4.2 · What is marginal</h3>
+
+<div class="finding f-marg">
+<h4>M1 · The conventions are written three times</h4>
+<p>Per <a href="#principles">§3.4</a>: <code>CLAUDE.md</code>, <code>template/CLAUDE.md</code> and
+<code>template/README.md</code> each carry a full statement of naming, error handling, test discipline and
+commit format; the first two additionally duplicate the SOLID and code/data sections at length. There is a
+defensible reason for two of the three (the studio brief stays home; the game's brief travels after
+budding), and none for the third. Roughly 200 lines under a rule that forbids exactly this pattern.</p>
+</div>
+
+<div class="finding f-marg">
+<h4>M2 · The changelog only grows</h4>
+<p>664 lines and 19 releases in 30 days, with no supersession mechanism. Directives narrow and reverse each
+other in prose — 0.15.0's entry says of 0.12.0's, <em>"this narrows the earlier sketchpad direction"</em> —
+but a daughter pinned at 0.9.0 receives both and must reconstruct that relationship itself, from prose,
+one directive at a time. The entry format has <code>Trigger</code>, <code>Read</code>,
+<code>Compare to</code>, <code>Action</code> and <code>Skip if</code>, and no <code>Supersedes</code>.</p>
+</div>
+
+<div class="finding f-marg">
+<h4>M3 · The panel-name check is case-insensitive over ordinary English</h4>
+<p>The regex <code>the (Shipper|Critic|Archivist|Superfan)'?s?\b</code> runs with <code>-i</code>, so the
+sentence "the critic in me wants a second pass" fails CI in a daughter repo. More concretely, the hook and
+the CI check have <b>different exemption lists</b>: the hook exempts <code>personas/</code>,
+<code>CLAUDE.md</code>, <code>CHANGELOG.md</code> and <code>.claude/hooks/</code>; CI exempts only
+<code>CLAUDE.md</code> and <code>test.yml</code>. A daughter that writes a changelog entry explaining this
+very rule passes the hook and fails CI. <span class="tag t-conf">verified</span> — no current false
+positive exists in <code>template/</code>, so this is latent rather than live.</p>
+</div>
+
+<div class="finding f-marg">
+<h4>M4 · Vestigial and stale references</h4>
+<ul>
+  <li><code>pages.yml</code> still concatenates <code>SPEC-SHEET.md</code> when searching for the release
+      sentinel — a legacy path from before 0.12.0 moved the checklist out, and before 0.15.0 established
+      that the file is deleted entirely. Harmless, but it now documents a state that cannot exist.</li>
+  <li><code>.gitignore</code> ignores <code>trash_treasure/spike/artifact.html</code>
+      <span class="tag t-conf">verified</span> — a path belonging to a game that has budded (and under a
+      name that does not match the surviving daughter, <code>treasure_trash</code>).</li>
+</ul>
+</div>
+
+<div class="finding f-marg">
+<h4>M5 · <code>package.sh</code> ships fonts the game does not use</h4>
+<p><code>RUNTIME=(index.html styles.css src fonts)</code>, under the comment <em>"What a player needs at
+runtime."</em> <span class="tag t-conf">verified</span> the template game does not use the VT323 face at
+all — <code>styles.css</code> sets <code>font-family: monospace</code> and <code>index.html</code> loads no
+font. The three <code>.woff2</code> subsets exist for <code>publishing/promo.html</code>, which is not in
+the zip. Every itch upload carries dead weight, and the comment is false about its own array. Minor in
+bytes; it matters because it is one of the few places the repo's prose is wrong about its own code.</p>
+</div>
+
+<div class="finding f-marg">
+<h4>M6 · Shell strictness is inconsistent</h4>
+<p><code>run.sh</code>, <code>package.sh</code> and <code>capture.sh</code> use
+<code>set -euo pipefail</code>; <code>post.sh</code> uses <code>set -uo pipefail</code>, dropping
+<code>-e</code>. Plausibly deliberate — a batch encoder should not abort the whole run because one take is
+missing — but it is undocumented in a repo that documents everything, and "one path, fail loudly" is a
+house rule.</p>
+</div>
+
+<div class="finding f-marg">
+<h4>M7 · Semver where the tier already carries severity</h4>
+<p>Every change is a minor bump, including four CONTRACT-tier breaking changes marked <code>!</code> in
+their commit subjects. Defensible under 0.x, and the CONTRACT/TIGHTEN/CLARIFY tier is doing the real work
+of communicating severity — which means the semver component is a monotonic counter wearing a version
+number's clothes. Not wrong; just be aware the number carries no information a daughter can act on.</p>
+</div>
+
+<h3 id="wrong">4.3 · What is wrong</h3>
+
+<div class="finding f-bad">
+<h4 id="w1">W1 · A CONTRACT directive was silently destroyed by the next bump <span class="tag t-conf">verified</span></h4>
+<p>The 0.16.0 bump commit <code>7fce55a</code> did not <em>insert</em> a new release section above 0.15.0 —
+it <b>overwrote the 0.15.0 heading line</b>:</p>
+<pre><code>$ git log --oneline -S'## [0.15.0]' -- CHANGELOG.md
+7fce55a feat(publishing): the embedded game reclaims its own keyboard focus   # removed it
+b8a2f4e feat(template)!: the spec sheet is pre-code scaffolding...            # added it
+
+$ git log -S'## [0.15.0]' -p -- CHANGELOG.md | grep -E '^[-+]## \['
+-## [0.15.0] — 2026-08-05
++## [0.16.0] — 2026-08-10</code></pre>
+<p>The 0.15.0 <em>body</em> — a CONTRACT-tier directive, <b>"the spec sheet is pre-code scaffolding, and
+it comes down"</b> — survives, now sitting as the second entry under <code>## [0.16.0]</code>. Consequences,
+in order of severity:</p>
+<ol>
+  <li><b>Version 0.15.0 is unreachable.</b> <code>entries_between()</code> selects sections by heading; no
+      0.15.0 heading exists, so no daughter can ever be told what 0.15.0 was.</li>
+  <li><b>A daughter stamped exactly 0.15.0</b> — the stamp any game copied from the template between
+      2026-08-05 and 2026-08-10 carries — is re-served a directive it has already acted on, mislabelled as
+      a later version's.</li>
+  <li><b>This is the exact failure <code>CONTRIBUTING.md</code> warns about in writing:</b> <em>"a release
+      heading typed at the wrong level is skipped entirely, folding its directive into the section above
+      and delivering it under someone else's version."</em> The document that predicts the failure did not
+      prevent it, because prediction is not a check.</li>
+  <li><b>Nothing detected it, and nothing could have.</b> <code>check_updates.py</code> validates that a
+      bracketed heading parses as semver; it does not validate that versions are contiguous, monotonic,
+      or that <code>VERSION</code> has a matching section. And CI never ran: the only workflow in the
+      mother repo is <code>template-tests.yml</code>, filtered to <code>paths: ['template/**']</code>. A
+      commit touching <code>CHANGELOG.md</code>, <code>VERSION</code> and <code>scripts/</code> triggers
+      <b>no CI at all</b>. <span class="tag t-conf">verified</span></li>
+</ol>
+<p>This is the most important finding in the report, and not because a spec-sheet directive went missing.
+It is because the studio's <em>single delivery-critical machine-read format</em> — the thing the entire
+mother/daughter architecture rests on — is the one artifact in the repo with no test, no CI, and no
+validator, in a repo that hooks the <code>Write</code> tool to enforce a naming convention.</p>
+</div>
+
+<div class="finding f-bad">
+<h4 id="w2">W2 · <code>capture.sh</code> depends on a different, private repo at a hard-coded sibling path <span class="tag t-conf">verified</span></h4>
+<pre><code>HERE="$(cd "$(dirname "$0")/.." &amp;&amp; pwd)"
+RECORDER="$HERE/../utilities/window_recorder.sh"
+[ -x "$RECORDER" ] || { echo "recorder not found: $RECORDER" &gt;&amp;2; exit 1; }</code></pre>
+<p>For a budded daughter at <code>~/code/my-game/</code>, that resolves to
+<code>~/code/utilities/window_recorder.sh</code>, which lives in
+<code>github.com/kleer001/utilities</code> — a <b>separate repository</b>. The dependency is undeclared in
+<code>publishing/</code>, in <code>video_shot_list.md</code>, in <code>PUBLISHING-RUNBOOK.md</code>, in
+<code>RELEASE-CHECKLIST.md</code> and in <code>template/README.md</code>, all of which describe
+<code>capture.sh</code> as a thing you run. It works on exactly one machine, by accident of directory
+layout, and fails on every fresh clone of every daughter — including a clone made by the author on another
+machine. The script also assumes <code>xdotool</code> and a live X11 session with no stated prerequisite.</p>
+</div>
+
+<div class="finding f-bad">
+<h4 id="w3">W3 · <code>post.sh</code> cannot run on a fresh template copy <span class="tag t-conf">verified</span></h4>
+<pre><code>FONT=fonts/VT323-Regular.ttf
+[ -f "$FONT" ] || { echo "missing font: $FONT" &gt;&amp;2; exit 1; }
+
+$ ls template/fonts/
+vt323-latin-ext.woff2   vt323-latin.woff2   VT323-OFL.txt   vt323-vietnamese.woff2</code></pre>
+<p>The template ships three <code>.woff2</code> subsets and the licence; it does not ship
+<code>VT323-Regular.ttf</code>, and this is not a rename — ffmpeg's <code>drawtext</code> filter cannot
+consume woff2, so the TTF genuinely must be obtained separately. Nothing in the repo says so. Every game
+that reaches the trailer step hits a hard exit on line 22 of a 272-line script whose two tuning tables are
+documented as "the per-game tuning surface."</p>
+</div>
+
+<div class="finding f-bad">
+<h4 id="w4">W4 · The template ships no <code>LICENSE</code> <span class="tag t-conf">verified</span></h4>
+<p><code>template/package.json</code> declares <code>"license": "MIT"</code>. <code>CLAUDE.md</code> lists
+MIT as a house platform default. <code>RELEASE-CHECKLIST.md</code> has <code>[ ] LICENSE present</code> as
+a gate item. <code>ITCH-PAGE.md</code> tells the player <em>"Source is open (MIT)."</em> The mother repo
+has a <code>LICENSE</code> file. <code>template/</code> does not, so every budded daughter starts life
+unlicensed, asserting MIT in three places, until someone notices at the release gate — which is the last
+possible moment and after the code has been public for the whole of alpha. <code>package.sh</code> also
+omits any licence file from the itch zip while shipping the VT323 subsets, whose OFL terms require the
+notice to travel with the font.</p>
+</div>
+
+<div class="finding f-bad">
+<h4 id="w5">W5 · The delivery mechanism has no test, in a studio that requires tests for new behaviour</h4>
+<p><code>CLAUDE.md</code>: <em>"new behavior gets a test that fails before the change and passes after."</em>
+<code>check_updates.py</code> is 171 lines of parsing, version comparison, section extraction and
+stamp mutation, and has zero tests. The test suite covers <code>mulberry32</code> (17 lines, trivially
+correct), the logo's scanline geometry (123 lines, cosmetic) and the compositor (65 lines, well covered).
+The studio tested the three things that were easy to test and left the one whose failure would be
+invisible — and it then failed invisibly, per <a href="#w1">W1</a>. <span class="tag t-jud">judgement</span>
+This is the cleanest illustration in the repo of the general pattern: effort flows to the loop that closes.</p>
+</div>
+
+<h3 id="toofar">4.4 · What went too far</h3>
+
+<div class="finding f-far">
+<h4 id="f1">F1 · Two enforcement mechanisms for the panel-name rule, in a one-person studio</h4>
+<p>A <code>PreToolUse</code> hook on <code>Write|Edit</code> that blocks the tool call, <em>and</em> a CI
+step that fails the build, <em>and</em> a paragraph in <code>CLAUDE.md</code>, <em>and</em> a paragraph in
+<code>template/CLAUDE.md</code>, <em>and</em> a paragraph in <code>personas/README.md</code>, <em>and</em>
+a note in <code>MAKING-A-GAME.md</code> — for a rule whose only possible violator is the person who wrote
+it. The underlying insight is excellent (<a href="#good">G3</a>). The response is the "make it impossible"
+reflex applied to a problem that "notice and delete it" already solves, and it now costs a regex over
+common English nouns in every daughter's CI (<a href="#marginal">M3</a>) forever.
+<span class="tag t-jud">judgement</span> Keep the hook, which is instant and free and catches the real case
+mid-session. Drop the CI step, which runs on every push of every daughter to catch a write the hook already
+blocked.</p>
+</div>
+
+<div class="finding f-far">
+<h4>F2 · Optimising a step nobody has performed</h4>
+<p>Versions 0.17.0, 0.18.0 and 0.19.0 are three successive refinements of <em>how to vet a curator before
+pitching them</em> — is the outlet still publishing (pull the feed, read the newest <code>pubDate</code>,
+drop anything quiet three months); is it actually read (median engagement across the last ten posts, not
+follower count); is it a format match (read the last twenty titles, ask what shape they share). The
+reasoning is genuinely good and the Bluesky/YouTube/WordPress measurement recipes are practical. It is
+also roughly 40 lines of increasingly refined instruction for a task that no game in this family has
+reached, and it now sits in the delivery queue of three daughters, at least one of which is a prototype.
+This is what the <a href="#premortem">pre-mortem</a> is pointing at, in its purest form.</p>
+</div>
+
+<div class="finding f-far">
+<h4>F3 · A document whose principal content is its own disclaimer</h4>
+<p><code>template/SPEC-SHEET.md</code> is 39 lines. Roughly 22 of them explain that the file has no
+authority, is not a promise or a contract, will be deleted when the slice plays, and that git history keeps
+it. Roughly 12 are the actual prompts. The <em>decision</em> is right and unusually clear-headed. The
+implementation is a page that spends most of itself arguing against its own existence — which suggests the
+honest form is four bullet points at the top of <code>GAME-SHEET.md</code> under a heading like "scratch,
+delete when it plays," and no file at all. The strongest evidence for this reading is that the studio has
+now spent three separate CONTRACT-tier directives (0.12.0, 0.15.0, and the 0.16.0 re-file) adjusting what
+this file is allowed to be.</p>
+</div>
+
+<div class="finding f-far">
+<h4>F4 · The prose-to-code ratio</h4>
+<p><span class="tag t-obs">measured</span> ≈2,900 lines of prose to 288 lines of game source. Some of that
+prose is load-bearing and excellent (<a href="#good">G1</a>). But a studio brief that a session must hold
+in context before writing a line of game code is itself a scoping decision, and this one now costs more to
+read than the thing it describes costs to write. <span class="tag t-jud">judgement</span> The three-way
+convention duplication (<a href="#marginal">M1</a>) is where to cut first, because it is the part no
+argument defends.</p>
+</div>
+
+<h3 id="notfar">4.5 · What didn't go far enough</h3>
+
+<div class="finding f-short">
+<h4>S1 · No design foundation at all</h4>
+<p>The headline gap. See <a href="#cartographer">§3.1</a> and <a href="#a1">A1</a>. The repo has a
+research-honesty gate, a code-architecture standard, a publishing runbook, a release gate and a convention
+versioning system, and no answer to "is the game good."</p>
+</div>
+
+<div class="finding f-short">
+<h4>S2 · No playtest protocol behind the beta definition</h4>
+<p>See <a href="#a2">A2</a>. The one loop that produces information the studio cannot generate by
+reasoning is the one loop with no procedure.</p>
+</div>
+
+<div class="finding f-short">
+<h4>S3 · The runbook's claims are unsourced and undated — under the repo's own strictest rule</h4>
+<p><code>RESEARCH.md</code>: <em>"Claims about the real world… are held to primary evidence… Cite when it
+matters."</em> <code>PUBLISHING-RUNBOOK.md</code> is the most claim-dense file in the repo — every
+paragraph asserts a specific behaviour of itch.io or YouTube, down to a verbatim error string
+(<code>short_text: expected text between 1 and 120 characters, or empty</code>) — and carries no source or
+date on any of it. Direct experience <em>is</em> primary evidence and is almost certainly where this came
+from; the problem is that nothing records that, so in twelve months no reader can distinguish "I hit this
+on 2026-07-31" from "I believe this," and platform behaviour is exactly the class of fact that expires. A
+one-line <code>Observed: 2026-07-31, itch.io dashboard</code> under each section costs nothing and is what
+the studio demands of every game it raises.</p>
+</div>
+
+<div class="finding f-short">
+<h4>S4 · Budding is verified once, by hand, and never again</h4>
+<p><code>BUDDING.md</code> step 3 correctly gates the destructive prune on "the new repo clones fresh and
+runs in isolation." That check happens once, manually, at bud time. Three daughters are now loose with no
+mechanism that would notice if one stopped passing its own tests, lost its Pages deploy, or drifted off the
+platform. The mother has a <code>check_updates.py</code> that pushes conventions <em>out</em> and nothing
+that reads anything back. <span class="tag t-jud">judgement</span> A twenty-line script that walks a roster
+of daughter paths and reports pin, test status and last commit would close this, and is a smaller
+investment than any of the last four directives.</p>
+</div>
+
+<div class="finding f-short">
+<h4>S5 · The one healthy feedback mechanism is undocumented</h4>
+<p>Commit <code>f817666</code> — harvesting conventions <em>from</em> a daughter — is the correct direction
+of information flow and has happened once. It is not named in <code>CONTRIBUTING.md</code>, which describes
+only how to author a convention in the studio and push it down. Making harvest the <em>documented default</em>
+path for a bump, and studio-authored directives the exception requiring justification, would restructure the
+repo's incentives at a cost of one paragraph.</p>
+</div>
+
+<p class="backtop"><a href="#top">↑ top</a></p>
+
+<!-- ============================================================ -->
+<h2 id="advice">5 · Advice — the mother repo</h2>
+
+<p>Ordered by leverage. Everything in tier A is a day or less; nothing here requires restructuring.</p>
+
+<h3>Tier A — do these first</h3>
+
+<h4 id="a1">A1 · Write the missing rung: a design foundation <span class="prio p1">P1</span></h4>
+<ul>
+  <li><b>Where:</b> <code>DESIGN.md</code> at the studio root, pointed at from <code>CLAUDE.md</code> with
+      the same "read when…" framing the other pointers use — <em>read when you are shaping the pitch and
+      again when the slice first plays.</em></li>
+  <li><b>Length:</b> one page. This document earns its place by the standard the repo already sets for
+      prose (its reader is a future session, and nothing in the code can state it), and it fails that
+      standard the moment it grows into a textbook.</li>
+  <li><b>Content — five questions with actual criteria, not four temperaments:</b>
+    <ol>
+      <li><b>What is the loop, in one sentence, and what does the player learn by repeating it?</b>
+          (Koster: fun is a pattern being learned; when there is nothing left to learn, it is boredom
+          regardless of production values. This is the operational form of the Critic's "second hour.")</li>
+      <li><b>Which uncertainty is this game selling?</b> (Costikyan's taxonomy — performative, solver's,
+          randomness, hidden information, narrative anticipation. The studio mandates a seeded PRNG in
+          every game and has never said what the randomness is <em>for</em>; a game can be perfectly
+          deterministic and perfectly arbitrary.)</li>
+      <li><b>Split the pitch M / D / A.</b> (Hunicke et al. — mechanics are what you build, aesthetics are
+          what the player feels, dynamics are what happens in between, and a pitch that names an aesthetic
+          with no mechanic that produces it is the "CRT filter over a game about nothing" failure the
+          Critic persona already describes without a name for it.)</li>
+      <li><b>Where is the input latency, and what does the action feel like?</b> (Swink. On a hand-rolled
+          canvas loop, every frame of lag is the studio's own doing and nothing else in the repo mentions
+          it.)</li>
+      <li><b>What is the failure state, and does losing teach anything?</b></li>
+    </ol>
+  </li>
+  <li><b>Then wire it to the panel:</b> give each persona sheet a line pointing at the question it owns.
+      The Shipper owns 1 and 5, the Critic owns 3, the Superfan owns 1's long tail, the Archivist owns the
+      lineage question already in <code>RESEARCH.md</code>. This converts four moods into four checklists
+      at a cost of four lines, and is the single change that would most improve the panel's output.</li>
+  <li><b>Cost:</b> half a day, of which most is reading the two free sources
+      (<a href="#references">R1</a>, <a href="#references">R2</a>).</li>
+</ul>
+
+<h4 id="a2">A2 · Write the playtest protocol <span class="prio p1">P1</span></h4>
+<ul>
+  <li><b>Where:</b> a section in <code>MAKING-A-GAME.md</code> under the beta label, where the definition
+      already lives.</li>
+  <li><b>Content:</b> the canonical shape, from Fullerton (<a href="#references">R4</a>) — recruit someone
+      who has not seen it; explain nothing beyond "here it is"; watch the hands and the first three
+      hesitations, not the face; never defend the design in the room; write your notes before you discuss
+      it; and the one rule that does most of the work — <em>what a tester says is data about what they
+      felt, not instructions about what to build.</em></li>
+  <li><b>Why it is P1:</b> this is the only information channel in the studio that cannot be simulated by
+      reasoning harder, and it is currently one sentence.</li>
+  <li><b>Cost:</b> one hour.</li>
+</ul>
+
+<h4 id="a3">A3 · Put a check on the delivery mechanism <span class="prio p1">P1</span></h4>
+<ul>
+  <li><b>Add <code>scripts/test_check_updates.py</code></b> — or a <code>--validate</code> mode on the
+      existing script — asserting: every <code>## [X.Y.Z]</code> parses; versions are strictly descending
+      down the file; <b>no version is skipped</b>; the newest heading equals <code>VERSION</code>;
+      <code>template/.trace_rom_studio_version</code> equals <code>VERSION</code>; every
+      <code>Read:</code> path exists on disk. Each of those five would have caught a real failure —
+      <a href="#w1">W1</a> trips the third and fourth.</li>
+  <li><b>Widen the CI path filter.</b> <code>template-tests.yml</code> is scoped to
+      <code>paths: ['template/**']</code>, so the changelog, <code>VERSION</code> and
+      <code>scripts/</code> are outside CI entirely. Add a second job, unfiltered, that runs the validator.</li>
+  <li><b>Then repair <a href="#w1">W1</a>:</b> restore a <code>## [0.15.0]</code> heading above its own
+      directive body, leaving 0.16.0 with only the keyboard-focus entry that belongs to it. The fix is one
+      line; the value is that the version becomes reachable again and the family's history stops lying.</li>
+  <li><b>Cost:</b> two hours including the tests.</li>
+</ul>
+
+<h4 id="a4">A4 · Fix the four shipped defects <span class="prio p1">P1</span></h4>
+<ul>
+  <li><b><a href="#w2">W2</a> — <code>capture.sh</code>:</b> either vendor <code>window_recorder.sh</code>
+      into <code>publishing/</code> (it is ~3 KB and MIT-compatible if you own it), or state the dependency
+      at the top of the script and in <code>template/README.md</code> and fail with an actionable message
+      naming the repo to clone. Vendoring is the right call — a launch tool that only runs on one machine
+      is not a tool the template can honestly ship.</li>
+  <li><b><a href="#w3">W3</a> — <code>post.sh</code>:</b> ship <code>VT323-Regular.ttf</code> alongside the
+      subsets (the OFL permits redistribution with the notice, which <code>fonts/</code> already carries),
+      or default <code>FONT</code> to a system face and document the substitution.</li>
+  <li><b><a href="#w4">W4</a> — <code>template/LICENSE</code>:</b> add it. Add it to
+      <code>package.sh</code>'s <code>RUNTIME</code> array too, alongside <code>fonts/VT323-OFL.txt</code>
+      if fonts stay in the zip.</li>
+  <li><b><a href="#marginal">M5</a> — <code>package.sh</code>:</b> drop <code>fonts</code> from
+      <code>RUNTIME</code> until a game actually uses the face, and make the comment true.</li>
+  <li><b>Cost:</b> an hour, all four.</li>
+</ul>
+
+<h3>Tier B — structural, worth a weekend</h3>
+
+<h4 id="a5">B1 · A bump needs a reason from outside the studio <span class="prio p2">P2</span></h4>
+<p>Add to <code>CONTRIBUTING.md</code>: <code>VERSION</code> moves only when <b>(a)</b> a game shipped and
+taught something, <b>(b)</b> a daughter hit the problem in a real build, or <b>(c)</b> the change is to the
+design foundation. Commit <code>f817666</code> is the model and should be cited as such. Everything else
+waits in <code>BREADCRUMB.md</code> — which already exists, already says <em>"work the studio owes
+itself,"</em> and is currently empty. This is the single highest-leverage line in this report against the
+<a href="#premortem">pre-mortem</a> failure, it costs one paragraph, and it would have deferred three of the
+last four bumps.</p>
+
+<h4 id="a6">B2 · Give directives a <code>Supersedes:</code> field <span class="prio p2">P2</span></h4>
+<p>Per <a href="#marginal">M2</a>. One new field in the entry format, and one rule in
+<code>check_updates.py</code>: when printing a range, mark any directive superseded by a later one in the
+same range as <em>context, already narrowed by</em>. A daughter at 0.9.0 currently receives 0.12.0's
+"the spec sheet is a sketchpad," then the 0.15.0 body's "…and it comes down," and must work out from prose
+that the second replaces the first. Making that machine-visible is what stops directive debt compounding.</p>
+
+<h4 id="a7">B3 · Collapse the three-way convention duplication <span class="prio p2">P2</span></h4>
+<p>Per <a href="#marginal">M1</a>. Keep two copies with a stated reason: the studio brief
+(<code>CLAUDE.md</code>) and the travelling brief (<code>template/CLAUDE.md</code>), which must stand alone
+after budding. Cut the third — <code>template/README.md</code> § Conventions — to a pointer at
+<code>./CLAUDE.md</code>. The README's job is <em>what this is and how to run it</em>, which it does well
+in its Layout and Run sections. This is the repo's own DRY rule, applied to the repo.</p>
+
+<h4 id="a8">B4 · Date and source the runbook <span class="prio p2">P2</span></h4>
+<p>Per <a href="#notfar">S3</a>. One <code>Observed: YYYY-MM-DD</code> line per section, and where a
+behaviour came from documentation rather than experience, the link. Platform behaviour expires; a runbook
+whose claims have no date cannot be audited, and this studio audits everything else.</p>
+
+<h3>Tier C — worth doing, no urgency</h3>
+<ul>
+  <li><b>C1 · Name the lineage.</b> A short <code>§ Prior art</code> in <code>CONTRIBUTING.md</code>
+      (Copier / cookiecutter for the update tie) and in <code>personas/README.md</code> (Schell's lenses,
+      Six Thinking Hats). Per <a href="#roots">§3.3</a> — the repo requires this of every mechanic it
+      raises, and it makes the genuine improvements <em>legible as improvements</em>.</li>
+  <li><b>C2 · Retire the CI half of the panel-name check</b> and keep the hook. Per <a href="#toofar">F1</a>.
+      If it stays, at minimum drop the <code>-i</code> flag and align its exemption list with the hook's.</li>
+  <li><b>C3 · Add a daughter roster and a read-back script.</b> Per <a href="#notfar">S4</a>. ~20 lines:
+      walk a list of paths, print pin vs <code>VERSION</code>, test status, last commit date. This is also
+      the smallest useful version of the <code>maestro.md</code> idea, aimed at one family.</li>
+  <li><b>C4 · Clean the vestigial references.</b> The <code>SPEC-SHEET.md</code> leg of the
+      <code>pages.yml</code> grep; the <code>trash_treasure/</code> line in <code>.gitignore</code>. Per
+      <a href="#marginal">M4</a>.</li>
+  <li><b>C5 · Reconsider <code>SPEC-SHEET.md</code> as a file.</b> Per <a href="#toofar">F3</a>. Three
+      CONTRACT directives have now been spent on what this file is allowed to be; a "Scratch — delete when
+      it plays" section at the bottom of <code>GAME-SHEET.md</code> would end the argument permanently.</li>
+  <li><b>C6 · Document <code>post.sh</code>'s missing <code>-e</code></b> or add it. Per
+      <a href="#marginal">M6</a>.</li>
+</ul>
+
+<p class="backtop"><a href="#top">↑ top</a></p>
+
+<!-- ============================================================ -->
+<h2 id="daughters">6 · Advice — the daughter repos</h2>
+
+<p>Three daughters were located on this machine. Per the agreed scope <b>none was audited</b>; the table
+below is pin metadata only, read from each repo's stamp and <code>git log</code>.</p>
+
+<div class="scroller">
+<table>
+<tr><th>Daughter</th><th>Pin</th><th>Behind by</th><th>Last commit</th></tr>
+<tr><td><code>finding_numbers</code></td><td>0.19.0</td><td>current</td><td><code>51cf27b</code> chore(bob): update session breadcrumb</td></tr>
+<tr><td><code>treasure_trash</code></td><td>0.13.0</td><td>5 releases (0.14, 0.16–0.19; 0.15 unreachable)</td><td><code>1286da6</code> feat(rules): a cabinet and its drawer are one thing</td></tr>
+<tr><td><code>coincidence-engine</code></td><td>0.9.0</td><td>9 releases (0.10–0.14, 0.16–0.19)</td><td><code>5350561</code> chore: rebuild the publishing copy</td></tr>
+</table>
+</div>
+
+<h3>6.1 · Should the daughters be audited separately?</h3>
+
+<div class="verdict">
+<p><b>Two of the three: no. One: yes, and for a reason that has nothing to do with drift.</b></p>
+<p><b>The convention drift will titrate down fine.</b> That was the right instinct. The update tie exists,
+it works — <span class="tag t-conf">verified</span> <code>check_updates.py</code> runs clean against the
+template — and the outstanding directives are mostly process wording that a daughter's own session can
+adopt in one pass. Running a full META_THEORY audit on <code>treasure_trash</code> or
+<code>coincidence-engine</code> would rediscover the mother's L1 gap three more times, because a daughter
+cannot have a foundation the mother never wrote. <b>Fix the mother, then let the pipe carry it.</b></p>
+<p><b>The exception is the two shipped defects</b> (<a href="#w2">W2</a>, <a href="#w3">W3</a>) and the
+<b>missing LICENSE</b> (<a href="#w4">W4</a>). Those are not conventions — they are broken files and a
+legal omission that every daughter is already carrying. They need a directive, not an audit.</p>
+<p><b>The one worth a look is <code>coincidence-engine</code></b>, and not for its pin. Its last commit is
+<em>"chore: rebuild the publishing copy"</em> — a game working on its <em>launch surfaces</em> while
+pinned nine releases back, which means it is at the publishing stage under 0.9.0-era rules and has never
+received the 0.11.0 CONTRACT directive that wires the Pages deploy to the release gate. That specific
+combination — <em>publishing activity on a stale pin</em> — is the one state where drift is not cosmetic,
+because it is the state where a placeholder landing page can go public. Ten minutes with
+<code>check_updates.py</code>, not an audit.</p>
+</div>
+
+<h3>6.2 · What to send down the pipe, and in what order</h3>
+
+<p>The correct delivery vehicle is the mechanism the studio already built. Three bumps, in this order —
+and note that this ordering is itself an application of <a href="#a5">B1</a>: each is a real defect a
+daughter is carrying, not a studio-authored preference.</p>
+
+<ol>
+  <li><b>A CONTRACT directive for the broken launch scripts and the licence.</b> Covers
+      <a href="#w2">W2</a>, <a href="#w3">W3</a>, <a href="#w4">W4</a> in one entry:
+      <em>Trigger</em> — the game has <code>publishing/</code> or intends to release;
+      <em>Compare to</em> — does <code>publishing/capture.sh</code> resolve its recorder, does
+      <code>fonts/VT323-Regular.ttf</code> exist, is there a <code>LICENSE</code>;
+      <em>Action</em> — adopt the vendored recorder, take the TTF, add the licence file.
+      This is the one with real consequences, so it goes first.</li>
+  <li><b>A CLARIFY directive re-pointing at the repaired changelog.</b> Once
+      <a href="#w1">W1</a> is fixed, a daughter that has already read the mis-filed 0.16.0 section should
+      know 0.15.0 is not new work. Small, but it keeps the family's history honest — and the studio's own
+      <code>CONTRIBUTING.md</code> rule about renumbering already establishes the etiquette for this.</li>
+  <li><b>A TIGHTEN directive for the design foundation, once <a href="#a1">A1</a> exists.</b>
+      <em>Trigger</em> — the game has a playable slice;
+      <em>Read</em> — <code>DESIGN.md</code>;
+      <em>Compare to</em> — the game's <code>GAME-SHEET.md</code>;
+      <em>Action</em> — answer the five questions against the running game and propose changes where an
+      answer is missing or thin. This is the directive that actually improves the games, and it is the one
+      that cannot be written until the mother has the document.</li>
+</ol>
+
+<h3>6.3 · Standing advice for every daughter</h3>
+<ul>
+  <li><b>Run <code>check_updates.py</code> at each stage transition</b> — not on a calendar. The natural
+      moments are: the slice first plays, content-complete, and the release gate. This matches the studio's
+      own "pay the cost at the moment it is about" principle and keeps directive debt from being a
+      background anxiety.</li>
+  <li><b>Adopt the pin discipline the studio states but does not enforce:</b> <code>--mark-read</code> only
+      after the directives are actually resolved, never to clear the queue. An advanced pin with unadopted
+      directives is worse than a stale one, because it is a lie the tooling now believes.</li>
+  <li><b>A daughter is allowed to refuse a directive</b> — every entry has a <code>Skip if</code> for
+      exactly this — but the refusal should land in a commit message. Otherwise the next session
+      re-litigates it, which is the same failure the studio's own "say who decided" rule is guarding
+      against.</li>
+  <li><b>Harvest upward.</b> If a daughter solves something the template got wrong — as one already did for
+      the dev server, packaging and CI — that is the highest-value bump the studio can receive. Per
+      <a href="#notfar">S5</a>, make this the expected direction rather than the exception.</li>
+</ul>
+
+<p class="backtop"><a href="#top">↑ top</a></p>
+
+<!-- ============================================================ -->
+<h2 id="conclusions">7 · Conclusions</h2>
+
+<p><b>1. The repo is very good at what it is good at, and the gap is narrow, specific, and cheap.</b>
+This is not a report about a project in trouble. Rungs L3, L4 and L5 are built to a standard most
+one-person studios never reach, and <code>PUBLISHING-RUNBOOK.md</code> alone justifies the repo's
+existence. The prescription is roughly one week: one page on design, half a page on playtesting, a
+validator, and four small fixes.</p>
+
+<p><b>2. The failure is structural, not personal, and it is the exact one META_THEORY predicts.</b> Every
+bump was reasonable in isolation. The model answered each question at the altitude it was asked, and no
+question was ever asked at L1 — so the studio accumulated a month of excellent work on top of a rung that
+was never built. That is why the altitude check is designed to be recurring: the drift is invisible from
+inside the work, and it feels like productivity the entire time.</p>
+
+<p><b>3. The deepest pattern: effort flows to whichever loop closes.</b> Process improvements close in an
+afternoon, alone, and always feel productive. Design improvements need a game, a player, and an
+uncomfortable observation. This repo tested the three easy things and left the delivery mechanism
+untested, wrote 215 lines on itch.io's form validation and none on difficulty, and enforced the persona
+rule twice while the changelog format — which it correctly identified in writing as silently breakable —
+broke silently. Every one of those is the same choice, made honestly, several times. <a href="#a5">B1</a>
+is the counterweight: make a bump require a reason from outside the studio, and the gravity reverses.</p>
+
+<p><b>4. The mother/daughter architecture is a real contribution and is currently unclaimed.</b>
+Proposal-not-patch — routing a template update through a reasoning agent that reads the cited files and
+argues with the user, rather than through a merge algorithm — is a genuine advance over the Copier lineage
+for the specific case of <em>prose conventions</em>, which no diff can merge. It deserves to be stated
+against its named ancestor. The same repo that requires every mechanic to name its lineage has not named
+its own.</p>
+
+<p><b>5. On the daughters: fix the mother and let the pipe carry it</b> — with the three exceptions in
+<a href="#daughters">§6</a>, which are broken files rather than conventions and need a directive now.</p>
+
+<p><b>6. Re-run the altitude check when <code>DESIGN.md</code> exists and a game has shipped</b>, not on a
+calendar. Those are the two events that will change the answer. Everything else is noise on a
+one-person studio.</p>
+
+<p class="backtop"><a href="#top">↑ top</a></p>
+
+<!-- ============================================================ -->
+<h2 id="references">8 · References</h2>
+
+<h4>Design canon cited in this report</h4>
+<p class="small">Every item below was verified by search at audit time. Access status is stated per the
+canon-finder's rule; the two free items are the ones this repo actually needs.</p>
+<ol>
+  <li id="r1"><b>R1 · Hunicke, R., LeBlanc, M., &amp; Zubek, R. (2004).</b> <i>MDA: A Formal Approach to
+      Game Design and Game Research.</i> Proceedings of the AAAI Workshop on Challenges in Game AI, AAAI
+      Press. <b>Free.</b> —
+      <a href="https://aaai.org/papers/ws04-04-001-mda-a-formal-approach-to-game-design-and-game-research/">aaai.org</a></li>
+  <li id="r2"><b>R2 · Church, D. (16 July 1999).</b> <i>Formal Abstract Design Tools.</i> Game Developer /
+      Gamasutra. <b>Free.</b> —
+      <a href="https://www.gamedeveloper.com/design/formal-abstract-design-tools">gamedeveloper.com</a></li>
+  <li id="r3"><b>R3 · Koster, R. (2004; 2nd ed. 2013).</b> <i>A Theory of Fun for Game Design.</i>
+      Paraglyph Press; 2nd ed. O'Reilly Media. Paywalled. —
+      <a href="https://www.oreilly.com/library/view/theory-of-fun/9781449363208/">O'Reilly</a></li>
+  <li id="r4"><b>R4 · Fullerton, T. (4th ed. 2018; 1st 2004, 5th 2023).</b> <i>Game Design Workshop: A
+      Playcentric Approach to Creating Innovative Games.</i> CRC Press / Taylor &amp; Francis. Paywalled;
+      library-common. —
+      <a href="https://www.taylorfrancis.com/books/mono/10.1201/b22309/game-design-workshop-tracy-fullerton">Taylor &amp; Francis</a></li>
+  <li id="r5"><b>R5 · Swink, S. (2008).</b> <i>Game Feel: A Game Designer's Guide to Virtual Sensation.</i>
+      Morgan Kaufmann. Paywalled. —
+      <a href="https://www.sciencedirect.com/book/monograph/9780123743282/game-feel">ScienceDirect</a></li>
+  <li id="r6"><b>R6 · Costikyan, G. (2013).</b> <i>Uncertainty in Games.</i> MIT Press (Playful Thinking
+      series), 152 pp. Paywalled; borrowable. —
+      <a href="https://mitpress.mit.edu/9780262527538/uncertainty-in-games/">MIT Press</a> ·
+      <a href="https://archive.org/details/uncertaintyingam0000cost">Internet Archive (borrow)</a></li>
+  <li id="r7"><b>R7 · Salen, K., &amp; Zimmerman, E. (25 Sept 2003).</b> <i>Rules of Play: Game Design
+      Fundamentals.</i> MIT Press. Paywalled. —
+      <a href="https://mitpress.mit.edu/9780262240451/rules-of-play/">MIT Press</a></li>
+  <li id="r8"><b>R8 · Schell, J. (3rd ed. 2019; 1st 2008).</b> <i>The Art of Game Design: A Book of
+      Lenses.</i> A K Peters / CRC Press. Paywalled. —
+      <a href="https://www.routledge.com/The-Art-of-Game-Design-A-Book-of-Lenses-Third-Edition/Schell/p/book/9781138632059">Routledge</a></li>
+  <li id="r9"><b>R9 · Björk, S., &amp; Holopainen, J. (2005).</b> <i>Patterns in Game Design.</i> Charles
+      River Media, 423 pp. Paywalled; free companion catalogue at
+      <a href="http://www.gameplaydesignpatterns.org/">gameplaydesignpatterns.org</a></li>
+</ol>
+
+<h4>Lineage sources for §3.3</h4>
+<ol start="10">
+  <li id="r10"><b>R10 · Copier — <i>Updating a project.</i></b> The <code>_commit</code> key in
+      <code>.copier-answers.yml</code>, <code>copier update</code>, and the hard rule that the answers file
+      is never hand-edited. Direct prior art for the version-stamp mechanism. —
+      <a href="https://copier.readthedocs.io/en/stable/updating/">copier.readthedocs.io</a></li>
+  <li id="r11"><b>R11 · Gawande, A. (2009).</b> <i>The Checklist Manifesto: How to Get Things Right.</i>
+      Metropolitan Books. Source of the DO-CONFIRM / READ-DO distinction that
+      <code>RELEASE-CHECKLIST.md</code> implements correctly without naming.
+      <span class="tag t-jud">judgement</span> — cited from general knowledge of the work, not verified at
+      audit time.</li>
+  <li id="r12"><b>R12 · de Bono, E. (1985).</b> <i>Six Thinking Hats.</i> The one-voice-at-a-time
+      structured-perspective technique behind the persona panel's "run them as distinct voices, not a
+      blended committee." <span class="tag t-jud">judgement</span> — cited from general knowledge, not
+      verified at audit time.</li>
+</ol>
+
+<h4>Primary evidence — the audited repo</h4>
+<p class="small">All at <code>kleer001/trace_rom_studio</code> @ <code>56a6a6e</code> unless noted.
+Findings marked <span class="tag t-conf">verified</span> above are reproducible with these:</p>
+<pre><code># W1 — the destroyed 0.15.0 section
+git log --oneline -S'## [0.15.0]' -- CHANGELOG.md
+git log -S'## [0.15.0]' -p -- CHANGELOG.md | grep -E '^[-+]## \['
+git show b8a2f4e:CHANGELOG.md | grep -n '^## \['     # 0.15.0 present at its own bump
+grep -n '^## \[' CHANGELOG.md                        # 0.15.0 absent at HEAD
+
+# W1 — CI never runs on the changelog
+grep -A3 '^on:' .github/workflows/template-tests.yml # paths: ['template/**']
+
+# W2 — the out-of-repo recorder
+grep -n 'RECORDER=' template/publishing/capture.sh
+git -C ../utilities remote get-url origin            # a separate GitHub repo
+
+# W3 — the missing TTF
+grep -n '^FONT=' template/publishing/post.sh; ls template/fonts/
+
+# W4 — no template licence
+ls template/LICENSE; grep -n '"license"' template/package.json
+
+# M5 — fonts shipped but unused by the game
+grep -n 'RUNTIME=' template/publishing/package.sh
+grep -n 'font' template/styles.css template/index.html
+
+# Baseline
+cd template &amp;&amp; npm test                              # 15 pass, 0 fail
+python3 ../scripts/check_updates.py .                # Up to date at v0.19.0</code></pre>
+
+<h4>Method</h4>
+<p class="small">
+  META_THEORY prompts <code>01-cartographer</code> · <code>02-canon-finder</code> ·
+  <code>03-altitude-check</code> · <code>04-roots</code> · <code>05-first-principles</code> ·
+  <code>06-pre-mortem</code>, run per <code>maestro.md</code> § How it would work (visit → orient → audit →
+  report → track drift). No foundation baseline was committed in the target, so the map-phase layers were
+  reconstructed rather than read.
+</p>
+
+<footer>
+  <p><b>Ontological checkup — <code>trace_rom_studio</code> — 2026-08-12.</b>
+  Report only; no file in the target repository was modified. Next checkup is worth running when
+  <code>DESIGN.md</code> exists and a game has shipped — the two events that would change the verdict.</p>
+  <p><a href="#top">↑ back to top</a></p>
+</footer>
+
+</div>
+</body>
+</html>
